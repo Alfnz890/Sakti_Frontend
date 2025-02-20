@@ -1,12 +1,12 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import ReactQuill from 'react-quill'
 import UploadLogo from '../../../assets/icons/cloud-computing.png'
 import axios from 'axios'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 
 const API_BASE_URL = import.meta.env.VITE_URL_API
 
-const Form = () => {
+const EditSpeaker = () => {
 
     const [file, setFile] = useState('')
     const [preview, setPreview] = useState('')
@@ -15,12 +15,24 @@ const Form = () => {
     const [biography, setBiography] = useState('')
     const [status, setStatus] = ('Active')
     const navigate = useNavigate();
+    const { id } = useParams();
 
     const loadImage = (e) => {
         const image = e.target.files[0]
         setFile(image)
         setPreview(URL.createObjectURL(image))
     }
+
+    useEffect(() => {
+        const getData = async () => {
+            const response = await axios.get(`${API_BASE_URL}/api/v1/speaker/${id}`)
+            setName(response.data.speakerName)
+            setPreview(response.data.urlimage)
+            setPosition(response.data.speakerPosition)
+            setBiography(response.data.speakerBiography)
+        }
+        getData()
+    }, [])
 
     const onSubmit = async (e) => {
         e.preventDefault();
@@ -34,7 +46,7 @@ const Form = () => {
         console.log({ name, position, biography, file })
 
         try {
-            await axios.post(`${API_BASE_URL}/api/v1/speaker`, formData, {
+            await axios.patch(`${API_BASE_URL}/api/v1/speaker/${id}`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }
@@ -111,4 +123,4 @@ const Form = () => {
     )
 }
 
-export default Form
+export default EditSpeaker

@@ -16,6 +16,8 @@ const Speaker = () => {
 
    const [dataAdmin, setDataAdmin] = useState({ id: null, username: "", email: "" })
    const [speaker, setSpeaker] = useState([]);
+   const [page, setPage] = useState(0)
+   const [pages, setPages] = useState(1)
 
    useEffect(() => {
       const getUser = async () => {
@@ -27,12 +29,15 @@ const Speaker = () => {
    }, [])
 
    useEffect(() => {
-      const getAllSpeakers = async () => {
-         const response = await axios.get(`${API_BASE_URL}/api/v1/speaker`)
-         setSpeaker(response.data)
-      }
       getAllSpeakers();
-   }, [])
+   }, [page])
+
+   const getAllSpeakers = async () => {
+      const response = await axios.get(`${API_BASE_URL}/api/v1/speaker?limit=10&page=${page}`)
+      setSpeaker(response.data.result)
+      setPage(response.data.page)
+      setPages(response.data.totalPage)
+   }
 
    const logout = async () => {
       try {
@@ -119,16 +124,16 @@ const Speaker = () => {
                            <td className='py-[8px] text-[15px] w-[200px]'>Active</td>
                            <td className='py-[8px] text-[15px] flex gap-1 items-center text-white'>
                               <a href="#" className='px-[10px] py-[2px] bg-red-500 rounded-[3px]'>Delete</a>
-                              <a href="#" className='px-[10px] py-[2px] bg-green-500 rounded-[3px]'>Update</a>
+                              <a href={`/dashboard/speaker/edit/${item.id}`} className='px-[10px] py-[2px] bg-green-500 rounded-[3px]'>Update</a>
                            </td>
                         </tr>
                      ))}
                   </tbody>
                </table>
                {/* Pagination */}
-               {/* <div className="flex justify-center">
+               <div className="flex justify-center">
                   <Pagination currentPage={page + 1} totalPages={pages} onPageChange={(newPage) => setPage(newPage - 1)} />
-               </div> */}
+               </div>
             </div>
          </div>
       </div>

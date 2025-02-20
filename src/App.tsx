@@ -26,6 +26,7 @@ import Audience from './pages/Admin/Events/Audience'
 import DashboardAdmin from './pages/Admin/Dashboard/DashboardAdmin'
 import Speaker from './pages/Admin/Speaker/Speaker'
 import SpeakerForm from './pages/Admin/Speaker/Form'
+import EditSpeaker from './pages/Admin/Speaker/EditSpeaker'
 
 const App = () => {
    return (
@@ -58,6 +59,7 @@ const App = () => {
             <Route path='/dashboard/event-audience/:id' element={< Audience />} />
             <Route path='/dashboard/speaker' element={< Speaker />} />
             <Route path='/dashboard/speaker/form' element={< SpeakerForm />} />
+            <Route path='/dashboard/speaker/edit/:id' element={< EditSpeaker />} />
          </Routes>
       </BrowserRouter>
    )
