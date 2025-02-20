@@ -1,8 +1,7 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import UploadLogo from '../../../assets/icons/cloud-computing.png'
 import ReactQuill from "react-quill"
 import 'react-quill/dist/quill.snow.css';
-import DOMPurify from "dompurify";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
@@ -22,12 +21,8 @@ const Form: React.FC = () => {
    const [details, setAgendaDetail] = useState('')
    const [file, setFile] = useState('')
    const [previewImage, setPreviewImage] = useState('');
-
-   const [speakerImage, setSpeakerImage] = useState('');
-   const [speakerBiography, setSpeakerBiography] = useState('');
-   const [speakerName, setSpeakerName] = useState('');
-   const [speakerPosition, setSpeakerPosition] = useState('');
-   const [speakerImagePreview, setSpeakerImagePreview] = useState('');
+   const [speaker, setSpeaker] = useState([]);
+   const [selectedSpeaker, setSelectedSpeaker] = useState("");
 
    const navigate = useNavigate();
 
@@ -37,40 +32,23 @@ const Form: React.FC = () => {
       setPreviewImage(URL.createObjectURL(image))
    }
 
-   const handelSpeakerImage = (e) => {
-      const SpeakerImage = e.target.files[0]
-      setSpeakerImage(SpeakerImage)
-      setSpeakerImagePreview(URL.createObjectURL(SpeakerImage))
-   }
-
    const onSubmit = async (e) => {
       e.preventDefault();
-
-      const descriptionPurify = DOMPurify.sanitize(description, { ALLOWED_TAGS: [] })
-      const reasonPurify = DOMPurify.sanitize(reasons, { ALLOWED_TAGS: [] })
-      const speakerBiographyPurify = DOMPurify.sanitize(speakerBiography, { ALLOWED_TAGS: [] })
-      const agendaDetailPurify = DOMPurify.sanitize(details, { ALLOWED_TAGS: [] })
-      const notesPurify = DOMPurify.sanitize(notes, { ALLOWED_TAGS: [] })
 
       const formData = new FormData();
 
       formData.append('name', name);
       formData.append('place', place);
       formData.append('link', link);
-      formData.append('descriptions', descriptionPurify);
-      formData.append('reasons', reasonPurify);
-      formData.append('notes', notesPurify);
+      formData.append('descriptions', description);
+      formData.append('reasons', reasons);
+      formData.append('notes', notes);
       formData.append('time', time);
       formData.append('status', status);
       formData.append('file', file);
       formData.append('date', date);
-      formData.append('details', agendaDetailPurify);
-
-      // Speaker
-      formData.append('speakerBiography', speakerBiographyPurify);
-      formData.append('speakerName', speakerName);
-      formData.append('speakerPosition', speakerPosition);
-      formData.append('speakerImage', speakerImage);
+      formData.append('details', details);
+      formData.append('speakerId', selectedSpeaker);
 
       try {
          await axios.post(`${API_BASE_URL}/api/v1/events`, formData, { withCredentials: true })
@@ -80,6 +58,19 @@ const Form: React.FC = () => {
       }
 
    }
+
+   useEffect(() => {
+      const getSpeaker = async () => {
+         const response = await axios.get(`${API_BASE_URL}/api/v1/speaker`)
+         console.log(response.data)
+         setSpeaker(response.data)
+      }
+      getSpeaker();
+   }, [])
+
+   const handleSpeakerChange = (e) => {
+      setSelectedSpeaker(e.target.value);
+   };
 
    return (
       <>
@@ -175,122 +166,23 @@ const Form: React.FC = () => {
                   </div>
                </div>
 
-               {/* MENTOR INFORMATION */}
+               {/* SPEAKER */}
                <div className="border p-3 my-3 shadow-md font-medium text-[17px] text-black">
-                  <h3>Mentor Information</h3>
+                  <h3>Speaker</h3>
                </div>
-
-               <div>
-
-                  <div className="mentor-information border shadow-md p-3">
-                     <div className="row flex border-b items-center py-[20px]">
-                        <div className="col max-w-[290px]">
-                           <p className="text-black font-medium text-[15px]">Mentor Image</p>
-                           <p className="text-[12px] text-light-grey mt-1">Upload a mentor photo with good quality, proportional size, and JPG or PNG file format.</p>
-                        </div>
-                        <div className="col w-full">
-                           <div className="h-[120px] w-[120px] border-2 border-dashed flex flex-col gap-1 justify-center items-center ml-[90px] object-cover cursor-pointer" onClick={() => document.getElementById("speaker-image-upload-input")?.click()}>
-
-                              {speakerImagePreview ? (
-                                 <img src={speakerImagePreview} alt="Preview" className="h-[120px] w-[120px] object-cover" />
-                              ) : (
-                                 <>
-                                    <img src={UploadLogo} className="w-[25px]" alt="Upload Icon" />
-                                    <p className="text-[11px]">Upload Here</p>
-                                 </>
-                              )}
-                              <input
-                                 id="speaker-image-upload-input"
-                                 type="file"
-                                 accept="image/*"
-                                 onChange={handelSpeakerImage}
-                                 className="hidden"
-                              />
-
-                           </div>
-                        </div>
-                     </div>
-
-                     <div className="row flex border-b items-center py-[20px]">
-                        <div className="col max-w-[290px]">
-                           <p className="text-black font-medium text-[15px]">Mentor Name</p>
-                           <p className="text-[12px] text-light-grey mt-1">Enter the full name of the mentor who will lead or contribute to this event. if there is no write manualy.</p>
-                        </div>
-
-                        <div className="col w-full">
-
-                           <select className="w-[320px] border rounded-[3px] ml-[90px] p-2 bg-lighter-grey outline-none text-[13px]" onChange={(e) => setSpeakerName(e.target.value)}>
-                              <option value="" disabled selected>Select</option>
-                              <option value="Dian Sa'adillah Maylawati, S.Kom., MT., Ph.D">Dian Sa'adillah Maylawati, S.Kom., MT., Ph.D</option>
-                              <option value="Cepy Slamet, Ph.D">Cepy Slamet, Ph.D</option>
-                              <option value="Wisnu Uriawan, Ph.D">Wisnu Uriawan, Ph.D</option>
-                              <option value="Mohamad Irfan, Ph.D">Mohamad Irfan, Ph.D</option>
-                              <option value="Gitarja Sandi, S.T, M.T">Gitarja Sandi, S.T, M.T</option>
-                              <option value="Agung Wahana, MT">Agung Wahana, MT</option>
-                              <option value="Diena Rauda Ramdania">Diena Rauda Ramdania</option>
-                              <option value="Yana Aditia Gerhana">Yana Aditia Gerhana</option>
-                              <option value="Nur Lukman, ST., M.Kom.">Nur Lukman, ST., M.Kom.</option>
-                              <option value="Ichsan Taufik, MT.">Ichsan Taufik, MT.</option>
-                              <option value="Undang Syaripudin, M.Kom">Undang Syaripudin, M.Kom</option>
-                              <option value="Jumadi, ST., MCS.">Jumadi, ST., MCS.</option>
-                              <option value="Ichsan Budiman, M.T">Ichsan Budiman, M.T</option>
-                              <option value="Muhammad Insan Al-Amin, S.T., M.T.">Muhammad Insan Al-Amin, S.T., M.T.</option>
-                              <option value="Muhammad Deden Firdaus, ST, M.Kom">Muhammad Deden Firdaus, ST, M.Kom</option>
-                              <option value="Eva Nurlatifah, S.T, M.Sc">Eva Nurlatifah, S.T, M.Sc</option>
-                              <option value="Aldy Rialdy Atmadja, MT.">Aldy Rialdy Atmadja, MT.</option>
-                              <option value="Cecep Nurul Alam, M.T">Cecep Nurul Alam, M.T</option>
-                           </select>
-
-                           <div className="ml-[90px] mt-2">
-
-                              <input type="text" className="w-[320px] border rounded-[3px] outline-none bg-lighter-grey text-[13px] p-2" value={speakerName} onChange={(e) => setSpeakerName(e.target.value)} />
-                              <p className="text-[12px] mt-[5px] text-light-grey">If the mentor is not on the list</p>
-
-                           </div>
-
-                        </div>
-                     </div>
-
-                     {/* MENTOR  POSITION */}
-                     <div className="row flex border-b items-center py-[20px]">
-                        <div className="col max-w-[290px]">
-                           <p className="text-black font-medium text-[15px]">Mentor Position</p>
-                           <p className="text-[12px] text-light-grey mt-1">Enter the Mentor's Position: Specify the role or title the mentor holds in relation to the event or organization.</p>
-                        </div>
-                        <div className="col w-full">
-
-                           <div className="ml-[90px]">
-
-                              <select className="w-[320px] border rounded-[3px]  p-2 bg-lighter-grey outline-none text-[13px]" onChange={(e) => setSpeakerPosition(e.target.value)}>
-                                 <option value="" disabled selected>Select</option>
-                                 <option value="Speaker">Speaker</option>
-                              </select>
-
-                              <div className="mt-2">
-                                 <input type="text" className="w-[320px] border rounded-[3px] outline-none bg-lighter-grey text-[13px] p-2" value={speakerPosition} onChange={(e) => setSpeakerPosition(e.target.value)} />
-                                 <p className="text-[12px] mt-[5px] text-light-grey">If the position is not on the list</p>
-                              </div>
-
-                           </div>
-
-                        </div>
-                     </div>
-
-                     {/* MENTOR BIOGRAPHY */}
-                     <div className="row flex items-center border-b pb-[65px] pt-[25px]">
-
-                        <div className="col max-w-[290px]">
-                           <p className="text-black font-medium text-[15px]">Mentor Biography</p>
-                           <p className="text-[12px] text-light-grey mt-1">Provide a brief biography of the mentor, highlighting their expertise, achievements, and relevance to the event.</p>
-                        </div>
-
-                        <div className="col w-full">
-                           <ReactQuill theme="snow" className="ml-[90px] h-[100px]" value={speakerBiography} onChange={setSpeakerBiography} />
-                        </div>
-
-                     </div>
+               <div className="row flex items-center border-b pb-[65px] pt-[25px] border shadow-md p-3">
+                  <div className="col max-w-[290px]">
+                     <p className="text-black font-medium text-[15px]">Choose Speaker</p>
+                     <p className="text-[12px] text-light-grey mt-1">Provide clear and concise details about the task, including specific steps, deadlines, and any resources required.</p>
                   </div>
-
+                  <div className="col w-full">
+                     <select className="w-[320px] border rounded-[3px] ml-[90px] p-2 bg-lighter-grey outline-none text-[13px]" value={selectedSpeaker} onChange={handleSpeakerChange}>
+                        <option value="" disabled>Select</option>
+                        {speaker.map((speaker) => (
+                           <option value={speaker.id} key={speaker.id}>{speaker.speakerName}</option>
+                        ))}
+                     </select>
+                  </div>
                </div>
 
                {/* AGENDA */}

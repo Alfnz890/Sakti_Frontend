@@ -5,6 +5,7 @@ import { useEffect, useState } from "react"
 import axios from "axios"
 import EventAgenda from "../../components/EventDetail/EventAgenda"
 import { ToastContainer, toast } from 'react-toastify';
+import parse from 'html-react-parser'
 
 const API_BASE_URL = import.meta.env.VITE_URL_API
 

@@ -118,7 +118,11 @@ const DashboardAdmin = () => {
                </a>
                <a href='/dashboard/report' className='flex items-center gap-2 p-2 rounded-[6px]'>
                   <img src={Bloglogo} className='w-[22px]' />
-                  <p className='text-sm'>Reports</p>
+                  <p className='text-sm'>Publish</p>
+               </a>
+               <a href='/dashboard/speaker' className='flex items-center gap-2 p-2 rounded-[6px]'>
+                  <img src={Bloglogo} className='w-[22px]' />
+                  <p className='text-sm'>Speaker</p>
                </a>
                <a onClick={logout} className='flex items-center gap-2 p-2 absolute bottom-5 cursor-pointer'>
                   <img src={Exitlogo} className='w-[20px]' />

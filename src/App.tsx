@@ -24,6 +24,8 @@ import EditFormReport from './pages/Admin/Report/EditForm'
 import EditEvent from './pages/Admin/Events/EditEvent'
 import Audience from './pages/Admin/Events/Audience'
 import DashboardAdmin from './pages/Admin/Dashboard/DashboardAdmin'
+import Speaker from './pages/Admin/Speaker/Speaker'
+import SpeakerForm from './pages/Admin/Speaker/Form'
 
 const App = () => {
    return (
@@ -54,6 +56,8 @@ const App = () => {
             <Route path='/dashboard/report/update/:id' element={< EditFormReport />} />
             <Route path='/dashboard/event/edit/:id' element={< EditEvent />} />
             <Route path='/dashboard/event-audience/:id' element={< Audience />} />
+            <Route path='/dashboard/speaker' element={< Speaker />} />
+            <Route path='/dashboard/speaker/form' element={< SpeakerForm />} />
          </Routes>
       </BrowserRouter>
    )

@@ -73,6 +73,20 @@ const Events = () => {
       setKeyword(query);
    }
 
+   const deleteEvent = async (id) => {
+      try {
+
+         const confirmDelete = window.confirm('Are you sure ?')
+         if (!confirmDelete) return;
+
+         await axios.delete(`${API_BASE_URL}/api/v1/events/${id}`, { withCredentials: true })
+         window.location.reload();
+
+      } catch (error) {
+         console.log(error)
+      }
+   }
+
    return (
       <>
          <div className='flex h-[100vh]'>
@@ -96,7 +110,11 @@ const Events = () => {
                   </a>
                   <a href='/dashboard/report' className='flex items-center gap-2 p-2 rounded-[6px]'>
                      <img src={Bloglogo} className='w-[22px]' />
-                     <p className='text-sm'>Reports</p>
+                     <p className='text-sm'>Publish</p>
+                  </a>
+                  <a href='/dashboard/speaker' className='flex items-center gap-2 p-2 rounded-[6px]'>
+                     <img src={Bloglogo} className='w-[22px]' />
+                     <p className='text-sm'>Speaker</p>
                   </a>
                   <a onClick={logout} className='flex items-center gap-2 p-2 absolute bottom-5 cursor-pointer'>
                      <img src={Exitlogo} className='w-[20px]' />
@@ -164,7 +182,7 @@ const Events = () => {
                                  <td className='py-[8px] text-[15px]'>{item.status}</td>
                                  <td className='py-[8px] text-[15px] flex gap-1 items-center text-white'>
                                     <a href={`/dashboard/event/edit/${item.id}`} className='px-[15px] py-[2px] bg-green-500 rounded-[3px]'>Edit</a>
-                                    <a href="#" className='px-[10px] py-[2px] bg-red-500 rounded-[3px]'>Delete</a>
+                                    <button onClick={() => deleteEvent(item.id)} className='px-[10px] py-[2px] bg-red-500 rounded-[3px]'>Delete</button>
                                     <a href={`/dashboard/event-audience/${item.id}`} className='px-[10px] py-[2px] bg-blue rounded-[3px]'>View</a>
                                  </td>
                               </tr>

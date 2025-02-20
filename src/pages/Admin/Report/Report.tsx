@@ -104,7 +104,11 @@ const Report = () => {
                   </a>
                   <a href='/dashboard/report' className='flex items-center gap-2 p-2 rounded-[6px] bg-yellow-primer'>
                      <img src={Bloglogo} className='w-[22px]' />
-                     <p className='text-sm'>Reports</p>
+                     <p className='text-sm'>Publish</p>
+                  </a>
+                  <a href='/dashboard/speaker' className='flex items-center gap-2 p-2 rounded-[6px]'>
+                     <img src={Bloglogo} className='w-[22px]' />
+                     <p className='text-sm'>Speaker</p>
                   </a>
                   <a onClick={logout} className='flex items-center gap-2 p-2 absolute bottom-5 cursor-pointer'>
                      <img src={Exitlogo} className='w-[20px]' />
@@ -149,18 +153,22 @@ const Report = () => {
                         </tr>
                      </thead>
                      <tbody>
-                        {reports.map((item, index) => (
-                           <tr className='border-b' key={item.id}>
-                              <td className='py-[8px]'>{index + 1}</td>
-                              <td className='py-[8px] text-[15px] line-clamp-2 overflow-hidden'>{item.title}</td>
-                              <td className='py-[8px] text-[15px] px-[13px]'>{item.createdAt}</td>
-                              <td className='py-[8px] text-[15px]'>{item.author}</td>
-                              <td className='py-[8px] text-[15px] flex gap-1 items-center text-white'>
-                                 <a href={`/dashboard/report/update/${item.id}`} className='px-[15px] py-[2px] bg-green-500 rounded-[3px]'>Edit</a>
-                                 <button className='px-[10px] py-[2px] bg-red-500 rounded-[3px]' onClick={() => deleteReport(item.id)}>Delete</button>
-                              </td>
-                           </tr>
-                        ))}
+                        {reports.length > 0 ? (
+                           reports.map((item, index) => (
+                              <tr className='border-b' key={item.id}>
+                                 <td className='py-[8px]'>{index + 1}</td>
+                                 <td className='py-[8px] text-[15px] line-clamp-2 overflow-hidden'>{item.title}</td>
+                                 <td className='py-[8px] text-[15px] px-[13px]'>{item.createdAt}</td>
+                                 <td className='py-[8px] text-[15px]'>{item.author}</td>
+                                 <td className='py-[8px] text-[15px] flex gap-1 items-center text-white'>
+                                    <a href={`/dashboard/report/update/${item.id}`} className='px-[15px] py-[2px] bg-green-500 rounded-[3px]'>Edit</a>
+                                    <button className='px-[10px] py-[2px] bg-red-500 rounded-[3px]' onClick={() => deleteReport(item.id)}>Delete</button>
+                                 </td>
+                              </tr>
+                           ))
+                        ) : (
+                           <p className='text-sm'>No Publish Found!</p>
+                        )}
                      </tbody>
                   </table>
                   {/* Pagination */}
