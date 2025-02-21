@@ -77,6 +77,7 @@ const UserDashboard = () => {
                      <tr>
                         <th className="text-sm text-left py-2 px-3">No</th>
                         <th className="text-sm text-left py-2 px-3 w-[350px]">Event</th>
+                        <th className="text-sm text-left py-2 px-3">Time</th>
                         <th className="text-sm text-left py-2 px-3">Link</th>
                         <th className="text-sm text-left py-2 px-3">Status</th>
                      </tr>
@@ -87,7 +88,8 @@ const UserDashboard = () => {
                            <tr>
                               <td className="text-sm text-left py-2 px-3">{index + 1}</td>
                               <td className="text-sm text-left py-2 px-3">{item.event.eventName}</td>
-                              <td className="text-sm text-left py-2 px-3"><a href={`${item.event.link}`}>{item.event.link}</a></td>
+                              <td className="text-sm text-left py-2 px-3">09.30</td>
+                              <td className="text-sm text-left py-2 px-3"><a href={item.event.link} className="underline" target="_blank">{item.event.link}</a></td>
                               <td className="text-sm text-left py-2 px-3">{item.event.status}</td>
                            </tr>
                         ))

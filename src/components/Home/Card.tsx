@@ -1,5 +1,6 @@
 import React from 'react'
 // import PP from '../../assets/raw.png'
+import parse from 'html-react-parser'
 
 interface CardProps {
    id: number;
@@ -18,7 +19,7 @@ const Card: React.FC<CardProps> = (props: CardProps) => {
             <div className="content pt-[10px]">
                <p className='line-clamp-1 text-[15px] font-medium'>{props.title}</p>
                <p className='text-[11px] text-lighter-grey-grey'>{props.date}</p>
-               <p className='line-clamp-2 text-[12px] mt-[7px] text-light-grey'>{props.description}</p>
+               <p className='line-clamp-2 text-[12px] mt-[7px] text-light-grey'>{parse(props.description || "")}</p>
                <a href={`/detail/${props.id}`} className='bg-yellow-primer rounded-[5px] text-[12px] flex justify-center py-[7px] mt-[7px]'>More Details</a>
             </div>
          </div>

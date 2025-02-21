@@ -13,7 +13,7 @@ const EditSpeaker = () => {
     const [name, setName] = useState('')
     const [position, setPosition] = useState('')
     const [biography, setBiography] = useState('')
-    const [status, setStatus] = ('Active')
+    const [status, setStatus] = useState('Active')
     const navigate = useNavigate();
     const { id } = useParams();
 
@@ -30,8 +30,10 @@ const EditSpeaker = () => {
             setPreview(response.data.urlimage)
             setPosition(response.data.speakerPosition)
             setBiography(response.data.speakerBiography)
+            setStatus(response.data.status)
         }
         getData()
+        console.log({ status: status })
     }, [])
 
     const onSubmit = async (e) => {
@@ -112,6 +114,18 @@ const EditSpeaker = () => {
                     </div>
                     <div className="col w-full">
                         <ReactQuill theme="snow" value={biography} onChange={setBiography} className="ml-[90px] h-[200px]" />
+                    </div>
+                </div>
+                <div className="row flex items-center py-[20px]">
+                    <div className="col max-w-[290px]">
+                        <p className="text-black font-medium text-[15px]">Status</p>
+                        <p className="text-[12px] text-light-grey mt-1">Determine Event Status: Select 'Active' if the event is in progress or 'Completed' if it finished.</p>
+                    </div>
+                    <div className="col w-full">
+                        <select className="w-[320px] border rounded-[3px] ml-[90px] p-2 bg-lighter-grey outline-none text-[13px]" value={status} onChange={(e) => setStatus(e.target.value)}>
+                            <option value="Active">Active</option>
+                            <option value="Non-Active">Non Active</option>
+                        </select>
                     </div>
                 </div>
                 <div className="mt-4 flex gap-2 items-center justify-end">

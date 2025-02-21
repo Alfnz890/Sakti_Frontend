@@ -18,6 +18,9 @@ const Speaker = () => {
    const [speaker, setSpeaker] = useState([]);
    const [page, setPage] = useState(0)
    const [pages, setPages] = useState(1)
+   const [keyword, setKeyword] = useState("")
+   const [query, setQuery] = useState("")
+   const [filter, setFilter] = useState("")
 
    useEffect(() => {
       const getUser = async () => {
@@ -30,10 +33,10 @@ const Speaker = () => {
 
    useEffect(() => {
       getAllSpeakers();
-   }, [page])
+   }, [page, keyword, filter])
 
    const getAllSpeakers = async () => {
-      const response = await axios.get(`${API_BASE_URL}/api/v1/speaker?limit=10&page=${page}`)
+      const response = await axios.get(`${API_BASE_URL}/api/v1/speaker?limit=10&page=${page}&search_query=${keyword}&status=${filter}`)
       setSpeaker(response.data.result)
       setPage(response.data.page)
       setPages(response.data.totalPage)
@@ -46,6 +49,12 @@ const Speaker = () => {
       } catch (error) {
          console.log(error);
       }
+   }
+
+   const searchData = (e) => {
+      e.preventDefault();
+      setPage(0);
+      setKeyword(query);
    }
 
    return (
@@ -84,12 +93,12 @@ const Speaker = () => {
          </div>
          <div className="col w-full p-6 bg-[#f5f5f5]">
             <div className='flex items-center justify-between'>
-               {/* <form onSubmit={searchData}>
-                     <div className='border flex items-center gap-2 px-4 py-2 rounded-[50px] shadow-md bg-white'>
-                        <img src={Searcglogo} className='w-[17px]' />
-                        <input type="text" placeholder='Search' className='w-[350px] outline-none' value={query} onChange={(e) => setQuery(e.target.value)} />
-                     </div>
-                  </form> */}
+               <form onSubmit={searchData}>
+                  <div className='border flex items-center gap-2 px-4 py-2 rounded-[50px] shadow-md bg-white'>
+                     <img src={Searcglogo} className='w-[17px]' />
+                     <input type="text" placeholder='Search' className='w-[350px] outline-none' value={query} onChange={(e) => setQuery(e.target.value)} />
+                  </div>
+               </form>
                <div className='flex items-center gap-3'>
                   <img src={Person} className='w-[40px] rounded-full' />
                   <div>
@@ -100,11 +109,21 @@ const Speaker = () => {
             </div>
             <div className='my-[23px] flex items-center justify-between'>
                <h3 className='text-[25px] font-semibold tracking-wider'>Speaker</h3>
-               <a href="/dashboard/speaker/form">
-                  <div className='px-4 py-2 rounded-[5px] bg-yellow-primer shadow-md'>
-                     <p className='text-[14px]'>+ Add New Speaker</p>
+               <div className='flex items-center gap-4'>
+                  <div>
+                     {/* Dropdown here */}
+                     <select className='border text-[14px] px-4 py-2 shadown-md outline-none rounded-[5px]' value={filter} onChange={(e) => setFilter(e.target.value)}>
+                        <option value="">All</option>
+                        <option value="Active">Active</option>
+                        <option value="Non-Active">Non Active</option>
+                     </select>
                   </div>
-               </a>
+                  <a href="/dashboard/speaker/form">
+                     <div className='px-4 py-2 rounded-[5px] bg-yellow-primer shadow-md'>
+                        <p className='text-[14px]'>+ Add New Speaker</p>
+                     </div>
+                  </a>
+               </div>
             </div>
             <div className='border p-3 rounded-[6px] bg-white shadow-md'>
                <table className='w-full'>
@@ -121,7 +140,7 @@ const Speaker = () => {
                         <tr className='border-b' key={item.id}>
                            <td className='py-[8px] w-[100px]'>{index + 1}</td>
                            <td className='py-[8px] text-[15px] w-[400px]'>{item.speakerName}</td>
-                           <td className='py-[8px] text-[15px] w-[200px]'>Active</td>
+                           <td className='py-[8px] text-[15px] w-[200px]'>{item.status}</td>
                            <td className='py-[8px] text-[15px] flex gap-1 items-center text-white'>
                               <a href="#" className='px-[10px] py-[2px] bg-red-500 rounded-[3px]'>Delete</a>
                               <a href={`/dashboard/speaker/edit/${item.id}`} className='px-[10px] py-[2px] bg-green-500 rounded-[3px]'>Update</a>

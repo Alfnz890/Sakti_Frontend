@@ -63,7 +63,7 @@ const Form: React.FC = () => {
       const getSpeaker = async () => {
          const response = await axios.get(`${API_BASE_URL}/api/v1/speaker`)
          console.log(response.data)
-         setSpeaker(response.data)
+         setSpeaker(response.data.result)
       }
       getSpeaker();
    }, [])

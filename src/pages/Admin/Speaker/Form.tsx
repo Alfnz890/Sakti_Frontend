@@ -13,7 +13,7 @@ const Form = () => {
     const [name, setName] = useState('')
     const [position, setPosition] = useState('')
     const [biography, setBiography] = useState('')
-    const [status, setStatus] = ('Active')
+    const [status, setStatus] = useState('Active')
     const navigate = useNavigate();
 
     const loadImage = (e) => {

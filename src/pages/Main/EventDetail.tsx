@@ -142,11 +142,11 @@ const EventDetail = () => {
          <div className="container mx-auto flex justify-between gap-[20px] py-[30px]">
             <div className="col w-[700px]">
                <h3 className="text-black font-semibold text-[20px]">Why should you take part in this event?</h3>
-               <p className="text-[14px] mt-[10px]">{event.reasons}</p>
+               <p className="text-[14px] mt-[10px]">{parse(event.reasons || "")}</p>
             </div>
             <div className="col w-[600px]">
                <h3 className="text-black font-semibold text-[20px]">what's going on at this event?</h3>
-               <p className="text-[14px] mt-[10px]">{event.descriptions}</p>
+               <p className="text-[14px] mt-[10px]">{parse(event.descriptions || "")}</p>
             </div>
          </div>
          {/* Mentor */}
@@ -155,18 +155,18 @@ const EventDetail = () => {
             <div className="max-w-[600px] flex flex-col gap-[3px]">
                <h3 className="text-[19px] font-medium text-black">{event.Speaker[0]?.speakerName}</h3>
                <p className="text-[14px] text-light-grey" >{event.Speaker[0]?.speakerPosition}</p>
-               <p className="text-[14px] w-[480px]">{event.Speaker[0]?.speakerBiography}</p>
+               <p className="text-[14px] w-[480px]">{parse(event.Speaker[0]?.speakerBiography || "")}</p>
             </div>
          </div>
          {/* Syllabus */}
          <div className="div  mt-[20px] py-[30px]">
             <div className="container mx-auto flex gap-[20px]">
-               <div className="w-[1300px]">
+               <div className="w-[1900px]">
                   <EventAgenda date={formatDate(event.date)} details={event.details} time={event.time} />
                </div>
                <div className="w-full flex flex-col gap-1">
                   <h1 className="text-2xl font-medium">Note's for audience</h1>
-                  <p className="text-sm">{event.notes}</p>
+                  <p className="text-sm">{parse(event.notes || "")}</p>
                </div>
             </div>
          </div>

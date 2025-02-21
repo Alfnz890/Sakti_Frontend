@@ -1,3 +1,5 @@
+import parse from 'html-react-parser'
+
 interface EventAgendaProps {
    date: string;
    time: string;
@@ -19,7 +21,7 @@ const EventAgenda = (props: EventAgendaProps) => {
                <tr>
                   <td>{props.date}</td>
                   <td>{props.time}</td>
-                  <td>{props.details}</td>
+                  <td>{parse(props.details || "")}</td>
                </tr>
             </tbody>
          </div>

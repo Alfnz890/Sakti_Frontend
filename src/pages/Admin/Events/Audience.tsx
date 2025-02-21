@@ -38,7 +38,7 @@ const Audience = () => {
                      </tr>
                      <tr className="border">
                         <td className="w-[200px] p-[6px]">Link</td>
-                        <td>: {data?.link}</td>
+                        <td>: <a href={data?.link} className="underline" target="_blank">{data?.link}</a></td>
                      </tr>
                      <tr className="border">
                         <td className="w-[200px] p-[6px]">Status</td>
