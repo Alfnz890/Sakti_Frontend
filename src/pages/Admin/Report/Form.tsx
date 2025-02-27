@@ -4,7 +4,7 @@ import ReactQuill from "react-quill"
 import 'react-quill/dist/quill.snow.css';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import DOMPurify from 'dompurify';
+import Swal from "sweetalert2";
 
 const API_BASE_URL = import.meta.env.VITE_URL_API
 
@@ -35,15 +35,11 @@ const HistoryForm: React.FC = () => {
    const onSubmit = async (e) => {
       e.preventDefault();
 
-      const titlePurify = DOMPurify.sanitize(title, { ALLOWED_TAGS: [] });
-      const bodyPurify = DOMPurify.sanitize(body, { ALLOWED_TAGS: [] });
-
       const formData = new FormData();
-      formData.append('title', titlePurify);
-      formData.append('body', bodyPurify);
+      formData.append('title', title);
+      formData.append('body', body);
       formData.append('file', file);
       formData.append('author', dataAdmin.username);
-
 
       try {
          await axios.post(`${API_BASE_URL}/api/v1/reports`, formData, {
@@ -52,9 +48,21 @@ const HistoryForm: React.FC = () => {
             },
             withCredentials: true
          })
+
+         await Swal.fire({
+            icon: "success",
+            title: "Success!",
+            text: "Your publish has been added!"
+         })
+
          navigate('/dashboard/report')
       } catch (error) {
          console.log(error)
+         Swal.fire({
+            icon: "error",
+            title: "Failed to Add!",
+            text: "Make sure to fill in all the entries!"
+         })
       }
    }
 

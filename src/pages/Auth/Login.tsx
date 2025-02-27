@@ -17,12 +17,7 @@ const Login = () => {
 
    const login = async (e) => {
       e.preventDefault();
-      try {
-         await axios.post(`${API_BASE_URL}/api/v1/login`, { username, password }, { withCredentials: true })
-         navigate('/')
-      } catch (error) {
-         console.error(error)
-      }
+      console.log('sabar kocak!...')
    }
 
    return (

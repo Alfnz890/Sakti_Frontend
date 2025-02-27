@@ -3,6 +3,7 @@ import Footer from "../../components/Footer"
 import axios from "axios"
 import { useCallback, useEffect, useState } from "react"
 import CardReport from "../../components/Report/CardReport"
+import Pagination from "../../components/Pagination"
 
 interface ReportProps {
    author: string,
@@ -19,7 +20,7 @@ const History = () => {
 
    const [reports, setReports] = useState<ReportProps[]>([])
    const [page, setPage] = useState(0)
-   const [pages, setPages] = useState(0)
+   const [pages, setPages] = useState(1)
 
    const getReports = useCallback(async () => {
       const response = await axios.get(`${API_BASE_URL}/api/v1/public/reports?limit=6&page=${page}`)
@@ -43,8 +44,8 @@ const History = () => {
                <CardReport author={item.author} body={item.body} url={item.url} title={item.title} key={item.id} id={item.id} />
             ))}
          </div>
-         <div className="container mx-auto flex justify-center items-center py-[20px]">
-            lah
+         <div className='flex items-center my-[30px] text-[14px] justify-center'>
+            <Pagination currentPage={page + 1} totalPages={pages} onPageChange={(newPage) => setPage(newPage - 1)} />
          </div>
          <Footer />
       </>

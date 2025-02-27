@@ -4,6 +4,7 @@ import ReactQuill from "react-quill"
 import 'react-quill/dist/quill.snow.css';
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 
 const API_BASE_URL = import.meta.env.VITE_URL_API
 
@@ -52,9 +53,21 @@ const Form: React.FC = () => {
 
       try {
          await axios.post(`${API_BASE_URL}/api/v1/events`, formData, { withCredentials: true })
+
+         await Swal.fire({
+            icon: "success",
+            title: "Success!",
+            text: "Your event has been added!"
+         })
+
          navigate('/dashboard')
       } catch (error) {
          console.log(error)
+         Swal.fire({
+            icon: "error",
+            title: "Failed to Add!",
+            text: "Make sure to fill in all the entries!"
+         })
       }
 
    }

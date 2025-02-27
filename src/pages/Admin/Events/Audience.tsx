@@ -1,6 +1,7 @@
 import axios from "axios"
 import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
+// import Papa from 'papaparse'
 
 const API_BASE_URL = import.meta.env.VITE_URL_API
 
@@ -21,6 +22,38 @@ const Audience = () => {
       const options = { day: 'numeric', month: 'long', year: 'numeric' };
       return new Date(dateString).toLocaleDateString('en-GB', options);
    };
+
+   const exportToCsv = () => {
+      if (!data?.EventUser || data.EventUser?.length === 0) {
+         alert("No audience data available!")
+         return;
+      }
+
+      const csvData = []
+
+      csvData.push(["Event Name", data.eventName])
+      csvData.push(["Event Place", data.place])
+      csvData.push(["Event Link", data.link])
+      csvData.push(["Event Status", data.status])
+      csvData.push(["Event Time", data.time])
+      csvData.push(["Event Date", data.date])
+      csvData.push(["Event Speaker", data.Speaker[0].speakerName])
+      csvData.push(["Event Position", data.Speaker[0].speakerPosition])
+      csvData.push([]);
+
+      csvData.push(["No", "Username", "Email", "Phone"]);
+      data.EventUser?.forEach((item, index) => {
+         csvData.push([index + 1, item.User.name, item.User.email, item.User.phone || "N/A"]);
+      });
+
+      const csv = Papa.unparse(csvData);
+
+      const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = `event_audience_${data.eventName}.csv`;
+      link.click();
+   }
 
    return (
       <>
@@ -64,7 +97,7 @@ const Audience = () => {
                </div>
             </div>
             <div className="my-4">
-               <button className="text-sm px-3 py-[7px] bg-yellow-primer rounded-[2px]">🖨️ Print Data</button>
+               <button className="text-sm px-3 py-[7px] bg-yellow-primer rounded-[2px]" onClick={exportToCsv}>🖨️ Print Data</button>
             </div>
             <div className="border p-2 border-t-yellow-primer border-t-2">
                <div>

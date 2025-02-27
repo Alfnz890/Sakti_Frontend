@@ -9,13 +9,20 @@ import Exitlogo from '../../../assets/icons/exit.png'
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 import Pagination from '../../../components/Pagination'
+import Swal from 'sweetalert2'
 
 const API_BASE_URL = import.meta.env.VITE_URL_API
+
+interface SpeakerProps {
+   id: number;
+   speakerName: string;
+   status: string;
+}
 
 const Speaker = () => {
 
    const [dataAdmin, setDataAdmin] = useState({ id: null, username: "", email: "" })
-   const [speaker, setSpeaker] = useState([]);
+   const [speaker, setSpeaker] = useState<SpeakerProps[]>([]);
    const [page, setPage] = useState(0)
    const [pages, setPages] = useState(1)
    const [keyword, setKeyword] = useState("")
@@ -57,6 +64,28 @@ const Speaker = () => {
       setKeyword(query);
    }
 
+   const deleteSpeaker = async (id) => {
+      Swal.fire({
+         title: "Are You Sure?",
+         text: "You won't be able to revert this!",
+         icon: "warning",
+         showCancelButton: true,
+         confirmButtonColor: "#d33",
+         cancelButtonColor: "#3085d6",
+         confirmButtonText: "Delete"
+      }).then(async (result) => {
+         if (result.isConfirmed) {
+            try {
+               await axios.delete(`${API_BASE_URL}/api/v1/speaker/${id}`)
+               await Swal.fire("Deleted!", "Speaker has been deleted.", "success")
+               window.location.reload();
+            } catch (error) {
+               Swal.fire("Error", "Failed to delete speaker", "error")
+            }
+         }
+      })
+   }
+
    return (
       <div className='flex h-[100vh]'>
          <div className="col w-[280px] p-4 border border-l">
@@ -83,7 +112,7 @@ const Speaker = () => {
                </a>
                <a href='/dashboard/speaker' className='flex items-center gap-2 p-2 rounded-[6px] bg-yellow-primer'>
                   <img src={Bloglogo} className='w-[22px]' />
-                  <p className='text-sm'>Speaker</p>
+                  <p className='text-sm'>Speakers</p>
                </a>
                <a onClick={logout} className='flex items-center gap-2 p-2 absolute bottom-5 cursor-pointer'>
                   <img src={Exitlogo} className='w-[20px]' />
@@ -108,7 +137,7 @@ const Speaker = () => {
                </div>
             </div>
             <div className='my-[23px] flex items-center justify-between'>
-               <h3 className='text-[25px] font-semibold tracking-wider'>Speaker</h3>
+               <h3 className='text-[25px] font-semibold tracking-wider'>Speakers</h3>
                <div className='flex items-center gap-4'>
                   <div>
                      {/* Dropdown here */}
@@ -142,7 +171,7 @@ const Speaker = () => {
                            <td className='py-[8px] text-[15px] w-[400px]'>{item.speakerName}</td>
                            <td className='py-[8px] text-[15px] w-[200px]'>{item.status}</td>
                            <td className='py-[8px] text-[15px] flex gap-1 items-center text-white'>
-                              <a href="#" className='px-[10px] py-[2px] bg-red-500 rounded-[3px]'>Delete</a>
+                              <button onClick={() => deleteSpeaker(item.id)} className='px-[10px] py-[2px] bg-red-500 rounded-[3px]'>Delete</button>
                               <a href={`/dashboard/speaker/edit/${item.id}`} className='px-[10px] py-[2px] bg-green-500 rounded-[3px]'>Update</a>
                            </td>
                         </tr>

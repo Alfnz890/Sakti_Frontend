@@ -10,6 +10,8 @@ import { useEffect, useState } from 'react'
 import axios from 'axios'
 import dayjs from 'dayjs'
 import Pagination from '../../../components/Pagination'
+import Swal from "sweetalert2";
+import parse from 'html-react-parser'
 
 interface ReportDataType {
    title: string
@@ -67,12 +69,25 @@ const Report = () => {
    }
 
    const deleteReport = async (id) => {
-      try {
-         await axios.delete(`${API_BASE_URL}/api/v1/reports/${id}`, { withCredentials: true })
-         window.location.reload()
-      } catch (error) {
-         console.log(error)
-      }
+      Swal.fire({
+         title: "Are You Sure?",
+         text: "You won't be able to revert this!",
+         icon: "warning",
+         showCancelButton: true,
+         confirmButtonColor: "#d33",
+         cancelButtonColor: "#3085d6",
+         confirmButtonText: "Delete"
+      }).then(async (result) => {
+         if (result.isConfirmed) {
+            try {
+               await axios.delete(`${API_BASE_URL}/api/v1/reports/${id}`, { withCredentials: true })
+               await Swal.fire("Deleted!", "Your event has been deleted.", "success")
+               window.location.reload()
+            } catch (error) {
+               Swal.fire("Error", "Failed to delete event", "error")
+            }
+         }
+      })
    }
 
    const searchData = (e) => {
@@ -108,7 +123,7 @@ const Report = () => {
                   </a>
                   <a href='/dashboard/speaker' className='flex items-center gap-2 p-2 rounded-[6px]'>
                      <img src={Bloglogo} className='w-[22px]' />
-                     <p className='text-sm'>Speaker</p>
+                     <p className='text-sm'>Speakers</p>
                   </a>
                   <a onClick={logout} className='flex items-center gap-2 p-2 absolute bottom-5 cursor-pointer'>
                      <img src={Exitlogo} className='w-[20px]' />
@@ -157,7 +172,7 @@ const Report = () => {
                            reports.map((item, index) => (
                               <tr className='border-b' key={item.id}>
                                  <td className='py-[8px]'>{index + 1}</td>
-                                 <td className='py-[8px] text-[15px] line-clamp-2 overflow-hidden'>{item.title}</td>
+                                 <td className='py-[8px] text-[15px] line-clamp-2 overflow-hidden'>{parse(item.title || "")}</td>
                                  <td className='py-[8px] text-[15px] px-[13px]'>{item.createdAt}</td>
                                  <td className='py-[8px] text-[15px]'>{item.author}</td>
                                  <td className='py-[8px] text-[15px] flex gap-1 items-center text-white'>

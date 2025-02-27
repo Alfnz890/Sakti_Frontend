@@ -11,6 +11,14 @@ import { useEffect, useState } from "react"
 
 const API_BASE_URL = import.meta.env.VITE_URL_API
 
+interface DashboardAdminProps {
+   url: string;
+   eventName: string;
+   date: string;
+   name: string;
+   email: string;
+}
+
 const DashboardAdmin = () => {
 
    const [dataAdmin, setDataAdmin] = useState({ id: null, username: "", email: "" })
@@ -19,8 +27,8 @@ const DashboardAdmin = () => {
    const [pendingEvents, setPendingEvents] = useState(0);
    const [cancelledEvents, setCancelledEvents] = useState(0);
    const [totalParticipants, setTotalParticipants] = useState(0);
-   const [recentlyEvent, setRecentlyEvent] = useState<DashboardAdmin[]>([]);
-   const [recentlyUser, setRecentlyUser] = useState<DashboardAdmin[]>([]);
+   const [recentlyEvent, setRecentlyEvent] = useState<DashboardAdminProps[]>([]);
+   const [recentlyUser, setRecentlyUser] = useState<DashboardAdminProps[]>([]);
 
    useEffect(() => {
 
@@ -122,7 +130,7 @@ const DashboardAdmin = () => {
                </a>
                <a href='/dashboard/speaker' className='flex items-center gap-2 p-2 rounded-[6px]'>
                   <img src={Bloglogo} className='w-[22px]' />
-                  <p className='text-sm'>Speaker</p>
+                  <p className='text-sm'>Speakers</p>
                </a>
                <a onClick={logout} className='flex items-center gap-2 p-2 absolute bottom-5 cursor-pointer'>
                   <img src={Exitlogo} className='w-[20px]' />

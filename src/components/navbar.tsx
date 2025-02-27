@@ -6,21 +6,19 @@ interface NavbarProps {
    username: string;
 }
 
+// const API_BASE_URL = import.meta.env.VITE_URL_API
+
 const Navbar = () => {
 
    const [user, setUser] = useState<NavbarProps>()
 
    useEffect(() => {
-      const getCurrentUser = async () => {
-         try {
-            const response = await axios.get('http://localhost:3000/api/v1/currentUser', { withCredentials: true })
-            setUser(response.data)
-         } catch (error) {
-            console.log(error);
-         }
 
+      const storedUser = localStorage.getItem('user');
+      if (storedUser) {
+         setUser(JSON.parse(storedUser))
       }
-      getCurrentUser();
+
    }, [])
 
    return (
@@ -37,7 +35,7 @@ const Navbar = () => {
                   <a href="/about" className="hover:underline">About</a>
                   <a href="/partners" className="hover:underline">Partner</a>
                   {user ? (
-                     <a href={`/user/dashboard/${user.id}`} className="hover:underline">{user.username}</a>
+                     <a href={`/user/dashboard/${user.id}`} className="hover:underline">{user.first_name}</a>
                   ) : (
                      <a href="/login" className="hover:underline">Login</a>
                   )}

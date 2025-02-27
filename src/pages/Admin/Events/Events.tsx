@@ -9,6 +9,7 @@ import Exitlogo from '../../../assets/icons/exit.png'
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 import Pagination from '../../../components/Pagination'
+import Swal from "sweetalert2";
 
 const API_BASE_URL = import.meta.env.VITE_URL_API
 
@@ -74,17 +75,25 @@ const Events = () => {
    }
 
    const deleteEvent = async (id) => {
-      try {
-
-         const confirmDelete = window.confirm('Are you sure ?')
-         if (!confirmDelete) return;
-
-         await axios.delete(`${API_BASE_URL}/api/v1/events/${id}`, { withCredentials: true })
-         window.location.reload();
-
-      } catch (error) {
-         console.log(error)
-      }
+      Swal.fire({
+         title: "Are You Sure?",
+         text: "You won't be able to revert this!",
+         icon: "warning",
+         showCancelButton: true,
+         confirmButtonColor: "#d33",
+         cancelButtonColor: "#3085d6",
+         confirmButtonText: "Delete"
+      }).then(async (result) => {
+         if (result.isConfirmed) {
+            try {
+               await axios.delete(`${API_BASE_URL}/api/v1/events/${id}`, { withCredentials: true })
+               await Swal.fire("Deleted!", "Your event has been deleted.", "success")
+               window.location.reload();
+            } catch (error) {
+               Swal.fire("Error", "Failed to delete event", "error")
+            }
+         }
+      })
    }
 
    return (
@@ -114,7 +123,7 @@ const Events = () => {
                   </a>
                   <a href='/dashboard/speaker' className='flex items-center gap-2 p-2 rounded-[6px]'>
                      <img src={Bloglogo} className='w-[22px]' />
-                     <p className='text-sm'>Speaker</p>
+                     <p className='text-sm'>Speakers</p>
                   </a>
                   <a onClick={logout} className='flex items-center gap-2 p-2 absolute bottom-5 cursor-pointer'>
                      <img src={Exitlogo} className='w-[20px]' />

@@ -1,32 +1,25 @@
 import { useEffect, useState } from "react"
 import Footer from "../../components/Footer"
 import Navbar from "../../components/navbar"
-import axios from "axios"
+// import axios from "axios"
 
 const MyProfile = () => {
 
    const [user, setUser] = useState([])
 
    useEffect(() => {
-      const getCurrentUser = async () => {
-         try {
-            const response = await axios.get('http://localhost:3000/api/v1/currentUser', { withCredentials: true })
-            setUser(response.data)
-         } catch (error) {
-            console.log(error);
-         }
 
+      const storedUser = localStorage.getItem('user');
+      if (storedUser) {
+         setUser(JSON.parse(storedUser))
       }
-      getCurrentUser();
+
    }, [])
 
    const logout = async () => {
-      try {
-         await axios.delete('http://localhost:3000/api/v1/logout', { withCredentials: true })
-         window.location.href = ('/');
-      } catch (error) {
-         console.log(error);
-      }
+      localStorage.removeItem('user');
+      localStorage.removeItem('token');
+      window.location.href = ('/');
    }
 
    return (
@@ -50,7 +43,7 @@ const MyProfile = () => {
                <div className="my-3">
                   <div className="flex items-center gap-[100px] bg-yellow-light">
                      <p className="py-3 px-3 text-sm">Name</p>
-                     <p className="py-3 px-3 text-sm">{user.username}</p>
+                     <p className="py-3 px-3 text-sm">{user.first_name}</p>
                   </div>
                   <div className="flex items-center gap-[102px]">
                      <p className="py-3 px-3 text-sm">Email</p>
@@ -58,7 +51,7 @@ const MyProfile = () => {
                   </div>
                   <div className="flex items-center gap-[44px] bg-yellow-light">
                      <p className="py-3 px-3 text-sm">Mobile Phone</p>
-                     <p className="py-3 px-3 text-sm">{user.phone}</p>
+                     <p className="py-3 px-3 text-sm">{user.telp}</p>
                   </div>
                </div>
             </div>

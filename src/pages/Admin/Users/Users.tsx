@@ -9,6 +9,7 @@ import Exitlogo from '../../../assets/icons/exit.png'
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 import Pagination from '../../../components/Pagination'
+import Swal from 'sweetalert2'
 
 interface UserProps {
    id: number
@@ -61,6 +62,28 @@ const Users = () => {
       }
    }
 
+   const deleteUser = async (id) => {
+      Swal.fire({
+         title: "Are You Sure?",
+         text: "You won't be able to revert this!",
+         icon: "warning",
+         showCancelButton: true,
+         confirmButtonColor: "#d33",
+         cancelButtonColor: "#3085d6",
+         confirmButtonText: "Delete"
+      }).then(async (result) => {
+         if (result.isConfirmed) {
+            try {
+               await axios.delete(`${API_BASE_URL}/api/v1/users/${id}`, { withCredentials: true })
+               await Swal.fire("Deleted!", "User has been deleted.", "success")
+               window.location.reload();
+            } catch (error) {
+               Swal.fire("Error", "Failed to delete user", "error")
+            }
+         }
+      })
+   }
+
    const searchData = (e) => {
       e.preventDefault();
       setPage(0);
@@ -94,7 +117,7 @@ const Users = () => {
                   </a>
                   <a href='/dashboard/speaker' className='flex items-center gap-2 p-2 rounded-[6px]'>
                      <img src={Bloglogo} className='w-[22px]' />
-                     <p className='text-sm'>Speaker</p>
+                     <p className='text-sm'>Speakers</p>
                   </a>
                   <a onClick={logout} className='flex items-center gap-2 p-2 absolute bottom-5 cursor-pointer'>
                      <img src={Exitlogo} className='w-[20px]' />
@@ -141,7 +164,7 @@ const Users = () => {
                               <td className='py-[8px] text-[15px]'>{item.email}</td>
                               <td className='py-[8px] text-[15px]'>{item.phone}</td>
                               <td className='py-[8px] text-[15px] flex gap-1 items-center text-white'>
-                                 <a href="#" className='px-[10px] py-[2px] bg-red-500 rounded-[3px]'>Delete</a>
+                                 <button onClick={() => deleteUser(item.id)} className='px-[10px] py-[2px] bg-red-500 rounded-[3px]'>Delete</button>
                               </td>
                            </tr>
                         ))}

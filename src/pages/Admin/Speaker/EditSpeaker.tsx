@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import ReactQuill from 'react-quill'
 import UploadLogo from '../../../assets/icons/cloud-computing.png'
 import axios from 'axios'
 import { useNavigate, useParams } from 'react-router-dom'
+import Swal from "sweetalert2";
 
 const API_BASE_URL = import.meta.env.VITE_URL_API
 
@@ -48,14 +49,27 @@ const EditSpeaker = () => {
         console.log({ name, position, biography, file })
 
         try {
+
             await axios.patch(`${API_BASE_URL}/api/v1/speaker/${id}`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }
             })
+
+            await Swal.fire({
+                icon: "success",
+                title: "Success!",
+                text: "Speaker has been updated"
+            })
+
             navigate('/dashboard/speaker')
         } catch (error) {
             console.log(error)
+            Swal.fire({
+                icon: "error",
+                title: "Failed!",
+                text: "Speaker failed to update"
+            })
         }
     }
 

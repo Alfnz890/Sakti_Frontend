@@ -18,27 +18,30 @@ const UserDashboard = () => {
    const [pages, setPages] = useState(1)
 
    const logout = async () => {
-      try {
-         await axios.delete('http://localhost:3000/api/v1/logout', { withCredentials: true })
-         window.location.href = ('/');
-      } catch (error) {
-         console.log(error);
-      }
+      localStorage.removeItem('user');
+      localStorage.removeItem('token');
+      window.location.href = ('/');
    }
 
    useEffect(() => {
 
-      const getCurrentUser = async () => {
-         try {
-            const response = await axios.get('http://localhost:3000/api/v1/currentUser', { withCredentials: true })
-            setUser(response.data)
-         } catch (error) {
-            console.log(error);
-         }
+      // const getCurrentUser = async () => {
+      //    try {
+      //       const response = await axios.get('http://localhost:3000/api/v1/currentUser', { withCredentials: true })
+      //       setUser(response.data)
+      //    } catch (error) {
+      //       console.log(error);
+      //    }
 
+      // }
+
+      // getCurrentUser();
+
+      const storedUser = localStorage.getItem('user');
+      if (storedUser) {
+         setUser(JSON.parse(storedUser))
       }
 
-      getCurrentUser();
    }, [])
 
    useEffect(() => {

@@ -19,13 +19,18 @@ const EventDetail = () => {
 
    useEffect(() => {
 
-      const getCurrentUser = async () => {
-         try {
-            const response = await axios.get(`${API_BASE_URL}/api/v1/currentUser`, { withCredentials: true })
-            setUser(response.data)
-         } catch (error) {
-            console.log(error);
-         }
+      // const getCurrentUser = async () => {
+      //    try {
+      //       const response = await axios.get(`${API_BASE_URL}/api/v1/currentUser`, { withCredentials: true })
+      //       setUser(response.data)
+      //    } catch (error) {
+      //       console.log(error);
+      //    }
+      // }
+
+      const storedUser = localStorage.getItem('user');
+      if (storedUser) {
+         setUser(JSON.parse(storedUser))
       }
 
       const getThisEvent = async () => {
@@ -34,7 +39,7 @@ const EventDetail = () => {
       }
 
       getThisEvent();
-      getCurrentUser();
+      // getCurrentUser();
 
    }, [id])
 
@@ -61,7 +66,7 @@ const EventDetail = () => {
 
    const addUserToEvent = async () => {
       try {
-         const response = await axios.post(`${API_BASE_URL}/api/v1/events/addUser/${user.id}/${id}`, {}, { withCredentials: true })
+         const response = await axios.post(`${API_BASE_URL}/api/v1/events/addUser/${user.id}/${id}`, {})
 
          if (response.status === 201) {
 
