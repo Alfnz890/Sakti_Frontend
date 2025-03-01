@@ -21,8 +21,12 @@ const EditEvent = () => {
    const [details, setAgendaDetail] = useState('')
    const [file, setFile] = useState('')
    const [previewImage, setPreviewImage] = useState('');
+
    const [speakerData, setSpeakerData] = useState([]);
    const [selectedSpeaker, setSelectedSpeaker] = useState('')
+
+   const [selectedCategory, setSelectedCategory] = useState('')
+   const [categories, setCategories] = useState([])
 
    const navigate = useNavigate();
    const { id } = useParams();
@@ -50,6 +54,7 @@ const EditEvent = () => {
       formData.append('date', date);
       formData.append('details', details);
       formData.append('speakerId', selectedSpeaker);
+      formData.append('categoryId', selectedCategory)
 
       try {
          await axios.patch(`${API_BASE_URL}/api/v1/events/${id}`, formData, {
@@ -87,6 +92,7 @@ const EditEvent = () => {
          setDate(response.data.date)
          setPreviewImage(response.data.url)
          setSelectedSpeaker(response.data.Speaker[0].id)
+         setSelectedCategory(response.data.categoryId)
       }
 
       const getSpeakers = async () => {
@@ -97,6 +103,14 @@ const EditEvent = () => {
       getThisEvent()
       getSpeakers()
    }, [id])
+
+   useEffect(() => {
+      const getCategory = async () => {
+         const response = await axios.get(`${API_BASE_URL}/api/v1/categories`)
+         setCategories(response.data.data)
+      }
+      getCategory();
+   }, [])
 
    return (
       <div className="container mx-auto mt-[30px]">
@@ -209,6 +223,24 @@ const EditEvent = () => {
                         ))}
                      </select>
                   </div>
+               </div>
+            </div>
+
+            <div className="border p-3 my-3 shadow-md font-medium text-[17px] text-black">
+               <h3>Category</h3>
+            </div>
+            <div className="row flex items-center border-b pb-[65px] pt-[25px] border shadow-md p-3">
+               <div className="col max-w-[290px]">
+                  <p className="text-black font-medium text-[15px]">Choose Category</p>
+                  <p className="text-[12px] text-light-grey mt-1">Lorem ipsum dolor sit amet consectetur adipisicing elit. Laudantium fugit explicabo ratione voluptatibus.</p>
+               </div>
+               <div className="col w-full">
+                  <select className="w-[320px] border rounded-[3px] ml-[90px] p-2 bg-lighter-grey outline-none text-[13px]" value={selectedCategory} onChange={(e) => setSelectedCategory(e.target.value)}>
+                     <option value="">Select</option>
+                     {categories.map((item) => (
+                        <option value={item.id} key={item.id}>{item.name}</option>
+                     ))}
+                  </select>
                </div>
             </div>
 

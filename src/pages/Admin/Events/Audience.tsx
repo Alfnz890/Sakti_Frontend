@@ -1,7 +1,7 @@
 import axios from "axios"
 import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
-// import Papa from 'papaparse'
+import Papa from 'papaparse'
 
 const API_BASE_URL = import.meta.env.VITE_URL_API
 
@@ -12,7 +12,7 @@ const Audience = () => {
 
    useEffect(() => {
       const getData = async () => {
-         const response = await axios.get(`${API_BASE_URL}/api/v1/events/${id}`, { withCredentials: true })
+         const response = await axios.get(`${API_BASE_URL}/api/v1/events/${id}`)
          setData(response.data)
       }
       getData();
@@ -43,7 +43,7 @@ const Audience = () => {
 
       csvData.push(["No", "Username", "Email", "Phone"]);
       data.EventUser?.forEach((item, index) => {
-         csvData.push([index + 1, item.User.name, item.User.email, item.User.phone || "N/A"]);
+         csvData.push([index + 1, item.User.first_name, item.User.email, item.User.phone || "N/A"]);
       });
 
       const csv = Papa.unparse(csvData);
@@ -114,7 +114,7 @@ const Audience = () => {
                         {data?.EventUser?.map((item, index) => (
                            <tr key={item.id} className="text-left border">
                               <th className="p-[6px]">{index + 1}</th>
-                              <td>{item.User.name}</td>
+                              <td>{item.User.first_name}</td>
                               <td>{item.User.email}</td>
                               <td>{item.User.phone}</td>
                            </tr>

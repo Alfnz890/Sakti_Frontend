@@ -9,6 +9,8 @@ interface UserDashboardProps {
    id: number;
 }
 
+const API_BASE_URL = import.meta.env.VITE_URL_API
+
 const UserDashboard = () => {
 
    const { id } = useParams();
@@ -19,25 +21,13 @@ const UserDashboard = () => {
 
    const logout = async () => {
       localStorage.removeItem('user');
-      localStorage.removeItem('token');
       window.location.href = ('/');
    }
 
    useEffect(() => {
 
-      // const getCurrentUser = async () => {
-      //    try {
-      //       const response = await axios.get('http://localhost:3000/api/v1/currentUser', { withCredentials: true })
-      //       setUser(response.data)
-      //    } catch (error) {
-      //       console.log(error);
-      //    }
-
-      // }
-
-      // getCurrentUser();
-
       const storedUser = localStorage.getItem('user');
+
       if (storedUser) {
          setUser(JSON.parse(storedUser))
       }
@@ -49,7 +39,7 @@ const UserDashboard = () => {
    }, [page])
 
    const getHistoryUser = async (page: number) => {
-      const response = await axios.get(`http://localhost:3000/api/v1/history/user/${id}?limit=5&page=${page}`, { withCredentials: true })
+      const response = await axios.get(`${API_BASE_URL}/api/v1/history/user/${id}?limit=5&page=${page}`)
       setHistory(response.data.result)
       setPage(response.data.page)
       setPages(response.data.totalPage)

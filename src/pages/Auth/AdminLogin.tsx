@@ -17,8 +17,11 @@ const AdminLogin = () => {
    const onSubmit = async (e) => {
       e.preventDefault();
       try {
-         await axios.post(`${API_BASE_URL}/api/v1/login`, { username, password }, { withCredentials: true })
+
+         const response = await axios.post(`/api/auth`, { username, password })
+         localStorage.setItem('admin', JSON.stringify(response.data.data))
          navigate('/dashboard')
+
       } catch (err: any) {
          setError(err.response?.data?.msg || "Login failed");
       }

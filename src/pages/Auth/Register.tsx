@@ -10,8 +10,10 @@ const API_BASE_URL = import.meta.env.VITE_URL_API
 
 const Register = () => {
 
-   const [username, setUsername] = useState('');
+   const [name, setUsername] = useState('');
    const [password, setPassword] = useState('');
+   const [email, setEmail] = useState('');
+   const [phone, setPhone] = useState('');
    const navigate = useNavigate();
 
    const onSubmit = async (e) => {
@@ -19,16 +21,22 @@ const Register = () => {
 
       try {
 
-         const response = await axios.post(`/api/auth`, { username, password })
-         const user = response.data.data;
+         // const response = await axios.post(`/api/auth`, { username, password })
+         // const user = response.data.data;
 
-         const name = user.username;
-         const first_name = user.first_name;
-         const phone = user.telp;
-         const email = user.email;
+         // const name = user.username;
+         // const first_name = user.first_name;
+         // const phone = user.telp;
 
-         await axios.post(`${API_BASE_URL}/api/v1/users`, { name, first_name, password, phone, email })
-         console.log("User has beed added successfully!")
+         // await axios.post(`${API_BASE_URL}/api/v1/users`, { name, first_name, password, phone, email })
+         // console.log("User has beed added successfully!")
+
+         try {
+            const response = await axios.post(`${API_BASE_URL}/api/v1/users`, { name, password, email, phone })
+            localStorage.setItem('user', JSON.stringify(response.data.data));
+         } catch (error) {
+            console.log(error)
+         }
 
          await toast.promise(
             new Promise((resolve) => setTimeout(resolve, 3000)), {
@@ -65,11 +73,19 @@ const Register = () => {
                <form className='mt-[20px] flex flex-col gap-[13px]' onSubmit={onSubmit}>
                   <div className='border flex w-[310px] gap-2 p-[7px] rounded-[5px] border-yellow'>
                      <img src={Person} className='w-[25px]' />
-                     <input type="text" className='w-full text-[15px] outline-none' placeholder='Username' value={username} onChange={(e) => setUsername(e.target.value)} />
+                     <input type="text" className='w-full text-[15px] outline-none' placeholder='Username' value={name} onChange={(e) => setUsername(e.target.value)} />
                   </div>
                   <div className='border flex w-[310px] gap-2 p-[7px] rounded-[5px] border-yellow'>
                      <img src={Lock} className='w-[22px]' />
                      <input type="password" className='w-full text-[15px] outline-none' placeholder='Password' value={password} onChange={(e) => setPassword(e.target.value)} />
+                  </div>
+                  <div className='border flex w-[310px] gap-2 p-[7px] rounded-[5px] border-yellow'>
+                     <img src={Lock} className='w-[22px]' />
+                     <input type="email" className='w-full text-[15px] outline-none' placeholder='Email' value={email} onChange={(e) => setEmail(e.target.value)} />
+                  </div>
+                  <div className='border flex w-[310px] gap-2 p-[7px] rounded-[5px] border-yellow'>
+                     <img src={Lock} className='w-[22px]' />
+                     <input type="text" className='w-full text-[15px] outline-none' placeholder='Phone' value={phone} onChange={(e) => setPhone(e.target.value)} />
                   </div>
                   <button type="submit" className='bg-yellow-primer text-[14px] text-white py-[8px] rounded-[5px]'>Register</button>
                </form>

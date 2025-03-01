@@ -73,7 +73,7 @@ const Home = () => {
                ))}
             </div>
             <div className='flex justify-center mt-[40px]'>
-               <a href="/classlist" className='text-[14px] px-[30px] py-[10px] rounded-full bg-yellow-primer text-black tracking-wide font-medium'>See All Events</a>
+               <a href="/allEvents" className='text-[14px] px-[30px] py-[10px] rounded-full bg-yellow-primer text-black tracking-wide font-medium'>See All Events</a>
             </div>
          </div>
          <Sponsors />

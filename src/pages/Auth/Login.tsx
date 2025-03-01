@@ -17,7 +17,26 @@ const Login = () => {
 
    const login = async (e) => {
       e.preventDefault();
-      console.log('sabar kocak!...')
+
+      try {
+
+         const response = await axios.post(`${API_BASE_URL}/api/v1/login`, { username, password })
+         localStorage.setItem('user', JSON.stringify(response.data.data));
+         navigate('/');
+
+      } catch (error) {
+         console.log(error)
+         // try {
+
+         //    const response = await axios.post(`/api/auth`, { username, password })
+         //    localStorage.setItem('admin', JSON.stringify(response.data.data))
+         //    navigate('/dashboard')
+
+         // } catch (error) {
+         //    console.error(error)
+         // }
+      }
+
    }
 
    return (
@@ -33,7 +52,6 @@ const Login = () => {
                   <div className='border flex w-[310px] gap-2 p-[7px] rounded-[5px] border-yellow items-center'>
                      <img src={Person} className='w-[25px]' />
                      <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} className='w-full text-[15px] outline-none' placeholder='Username' />
-                     {/* <input type="text" className='border outline-none' /> */}
                   </div>
                   <div className='border flex w-[310px] gap-2 p-[7px] rounded-[5px] border-yellow'>
                      <img src={Lock} className='w-[22px]' />
@@ -41,12 +59,16 @@ const Login = () => {
                   </div>
                   <button type="submit" className='bg-yellow-primer text-[14px] text-white py-[8px] rounded-[5px]'>Login</button>
                </form>
-               <div className='mt-[15px]'>
+               <div className='mt-[15px] flex flex-col gap-2'>
                   <div className='flex items-center gap-[10px]'>
                      <img src={InformationBtn} className='w-[16px]' />
-                     <p className='text-[13px]'>Students use the SALAM account</p>
+                     <p className='text-[13px]'>Sign Up first with SALAM account</p>
                   </div>
-                  <div className='flex items-center gap-[10px] mt-[8px]'>
+                  <div className='flex items-center gap-[10px]'>
+                     <img src={InformationBtn} className='w-[16px]' />
+                     <p className='text-[13px]'>Login with SALAM account</p>
+                  </div>
+                  <div className='flex items-center gap-[10px]'>
                      <img src={InformationBtn} className='w-[16px]' />
                      <p className='text-[13px]'>Admin login <a href="/admin-login" className='underline'>here</a></p>
                   </div>

@@ -30,12 +30,10 @@ const Speaker = () => {
    const [filter, setFilter] = useState("")
 
    useEffect(() => {
-      const getUser = async () => {
-         const response = await axios.get(`${API_BASE_URL}/api/v1/currentUser`, { withCredentials: true })
-         setDataAdmin(response.data)
+      const storedData = localStorage.getItem('admin');
+      if (storedData) {
+         setDataAdmin(JSON.parse(storedData))
       }
-
-      getUser()
    }, [])
 
    useEffect(() => {
@@ -50,12 +48,8 @@ const Speaker = () => {
    }
 
    const logout = async () => {
-      try {
-         await axios.delete(`${API_BASE_URL}/api/v1/logout`, { withCredentials: true })
-         window.location.href = ('/');
-      } catch (error) {
-         console.log(error);
-      }
+      localStorage.removeItem('admin');
+      window.location.href = ('/');
    }
 
    const searchData = (e) => {
@@ -114,6 +108,10 @@ const Speaker = () => {
                   <img src={Bloglogo} className='w-[22px]' />
                   <p className='text-sm'>Speakers</p>
                </a>
+               <a href='/dashboard/category' className='flex items-center gap-2 p-2 rounded-[6px]'>
+                  <img src={Bloglogo} className='w-[22px]' />
+                  <p className='text-sm'>Category</p>
+               </a>
                <a onClick={logout} className='flex items-center gap-2 p-2 absolute bottom-5 cursor-pointer'>
                   <img src={Exitlogo} className='w-[20px]' />
                   <p className='text-sm'>Logout</p>
@@ -131,7 +129,7 @@ const Speaker = () => {
                <div className='flex items-center gap-3'>
                   <img src={Person} className='w-[40px] rounded-full' />
                   <div>
-                     <p className='text-[14px]'>{dataAdmin.username}</p>
+                     <p className='text-[14px]'>{dataAdmin.first_name}</p>
                      <p className='text-[11px] text-light-grey'>019283712638123123</p>
                   </div>
                </div>

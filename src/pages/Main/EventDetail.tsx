@@ -19,15 +19,6 @@ const EventDetail = () => {
 
    useEffect(() => {
 
-      // const getCurrentUser = async () => {
-      //    try {
-      //       const response = await axios.get(`${API_BASE_URL}/api/v1/currentUser`, { withCredentials: true })
-      //       setUser(response.data)
-      //    } catch (error) {
-      //       console.log(error);
-      //    }
-      // }
-
       const storedUser = localStorage.getItem('user');
       if (storedUser) {
          setUser(JSON.parse(storedUser))
@@ -39,7 +30,6 @@ const EventDetail = () => {
       }
 
       getThisEvent();
-      // getCurrentUser();
 
    }, [id])
 
@@ -119,8 +109,6 @@ const EventDetail = () => {
          <button className="text-sm mt-3 px-5 py-2 rounded-[4px] bg-yellow-primer shadow-md" onClick={addUserToEvent}>Register</button>
       )
    }
-
-
 
    return (
       <>

@@ -32,37 +32,37 @@ const DashboardAdmin = () => {
 
    useEffect(() => {
 
-      const getUser = async () => {
-         const response = await axios.get(`${API_BASE_URL}/api/v1/currentUser`, { withCredentials: true })
-         setDataAdmin(response.data)
+      const storedData = localStorage.getItem('admin');
+      if (storedData) {
+         setDataAdmin(JSON.parse(storedData))
       }
-      getUser()
+
    }, [])
 
    useEffect(() => {
 
       const getActiveEvents = async () => {
-         const response = await axios.get(`${API_BASE_URL}/api/v1/events?status=Active`, { withCredentials: true })
+         const response = await axios.get(`${API_BASE_URL}/api/v1/events?status=Active`)
          setActiveEvents(response.data.totalRows)
       }
 
       const getCompletedEvents = async () => {
-         const response = await axios.get(`${API_BASE_URL}/api/v1/events?status=Completed`, { withCredentials: true })
+         const response = await axios.get(`${API_BASE_URL}/api/v1/events?status=Completed`)
          setCompletedEvents(response.data.totalRows)
       }
 
       const getPendingEvents = async () => {
-         const response = await axios.get(`${API_BASE_URL}/api/v1/events?status=Pending`, { withCredentials: true })
+         const response = await axios.get(`${API_BASE_URL}/api/v1/events?status=Pending`)
          setPendingEvents(response.data.totalRows)
       }
 
       const getCancelledEvents = async () => {
-         const response = await axios.get(`${API_BASE_URL}/api/v1/events?status=Cancelled`, { withCredentials: true })
+         const response = await axios.get(`${API_BASE_URL}/api/v1/events?status=Cancelled`)
          setCancelledEvents(response.data.totalRows)
       }
 
       const getTotalParticipants = async () => {
-         const response = await axios.get(`${API_BASE_URL}/api/v1/getAllParticipants`, { withCredentials: true })
+         const response = await axios.get(`${API_BASE_URL}/api/v1/getAllParticipants`)
          setTotalParticipants(response.data)
       }
 
@@ -77,12 +77,12 @@ const DashboardAdmin = () => {
    useEffect(() => {
 
       const getRecentlyEvent = async () => {
-         const response = await axios.get(`${API_BASE_URL}/api/v1/events?limit=1`, { withCredentials: true })
+         const response = await axios.get(`${API_BASE_URL}/api/v1/events?limit=1`)
          setRecentlyEvent(response.data.result[0])
       }
 
       const getRecentlyUser = async () => {
-         const response = await axios.get(`${API_BASE_URL}/api/v1/users?limit=1`, { withCredentials: true })
+         const response = await axios.get(`${API_BASE_URL}/api/v1/users?limit=1`)
          setRecentlyUser(response.data.result[0])
       }
 
@@ -91,12 +91,8 @@ const DashboardAdmin = () => {
    }, [])
 
    const logout = async () => {
-      try {
-         await axios.delete(`${API_BASE_URL}/api/v1/logout`, { withCredentials: true })
-         window.location.href = ('/');
-      } catch (error) {
-         console.log(error);
-      }
+      localStorage.removeItem('admin');
+      window.location.href = ('/');
    }
 
    const formatDate = (dateString: string) => {
@@ -132,6 +128,10 @@ const DashboardAdmin = () => {
                   <img src={Bloglogo} className='w-[22px]' />
                   <p className='text-sm'>Speakers</p>
                </a>
+               <a href='/dashboard/category' className='flex items-center gap-2 p-2 rounded-[6px]'>
+                  <img src={Bloglogo} className='w-[22px]' />
+                  <p className='text-sm'>Category</p>
+               </a>
                <a onClick={logout} className='flex items-center gap-2 p-2 absolute bottom-5 cursor-pointer'>
                   <img src={Exitlogo} className='w-[20px]' />
                   <p className='text-sm'>Logout</p>
@@ -143,7 +143,7 @@ const DashboardAdmin = () => {
                <div className='flex items-center gap-3'>
                   <img src={Person} className='w-[40px] rounded-full' />
                   <div>
-                     <p className='text-[14px]'>{dataAdmin.username}</p>
+                     <p className='text-[14px]'>{dataAdmin.first_name}</p>
                      <p className='text-[11px] text-light-grey'>019283712638123123</p>
                   </div>
                </div>
@@ -189,7 +189,7 @@ const DashboardAdmin = () => {
                   <div className='border p-3 flex items-center gap-3 mt-2 shadow-md rounded-[5px] bg-white'>
                      <img src={Logo} className='w-[30px]' />
                      <div className='text-[12px]'>
-                        <p className='line-clamp-1'>{recentlyUser.name}</p>
+                        <p className='line-clamp-1'>{recentlyUser.first_name}</p>
                         <p className='text-light-grey'>{recentlyUser.email}</p>
                      </div>
                   </div>

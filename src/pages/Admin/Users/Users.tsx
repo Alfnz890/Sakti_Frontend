@@ -30,12 +30,10 @@ const Users = () => {
    const [query, setQuery] = useState("")
 
    useEffect(() => {
-      const getUser = async () => {
-         const response = await axios.get(`${API_BASE_URL}/api/v1/currentUser`, { withCredentials: true })
-         setDataAdmin(response.data)
+      const storedData = localStorage.getItem('admin');
+      if (storedData) {
+         setDataAdmin(JSON.parse(storedData))
       }
-
-      getUser()
    }, [])
 
    useEffect(() => {
@@ -44,7 +42,7 @@ const Users = () => {
 
    const fetchUser = async (page: number) => {
       try {
-         const response = await axios.get(`${API_BASE_URL}/api/v1/users?page=${page}&limit=5&search_query=${keyword}`, { withCredentials: true })
+         const response = await axios.get(`${API_BASE_URL}/api/v1/users?page=${page}&limit=5&search_query=${keyword}`)
          setUser(response.data.result)
          setPage(response.data.page);
          setPages(response.data.totalPage)
@@ -119,6 +117,10 @@ const Users = () => {
                      <img src={Bloglogo} className='w-[22px]' />
                      <p className='text-sm'>Speakers</p>
                   </a>
+                  <a href='/dashboard/category' className='flex items-center gap-2 p-2 rounded-[6px]'>
+                     <img src={Bloglogo} className='w-[22px]' />
+                     <p className='text-sm'>Category</p>
+                  </a>
                   <a onClick={logout} className='flex items-center gap-2 p-2 absolute bottom-5 cursor-pointer'>
                      <img src={Exitlogo} className='w-[20px]' />
                      <p className='text-sm'>Logout</p>
@@ -136,7 +138,7 @@ const Users = () => {
                   <div className='flex items-center gap-3'>
                      <img src={Person} className='w-[40px] rounded-full' />
                      <div>
-                        <p className='text-[14px]'>{dataAdmin.username}</p>
+                        <p className='text-[14px]'>{dataAdmin.first_name}</p>
                         <p className='text-[11px] text-light-grey'>019283712638123123</p>
                      </div>
                   </div>
@@ -160,9 +162,9 @@ const Users = () => {
                         {user.map((item, index) => (
                            <tr className='border-b' key={item.id}>
                               <td className='py-[8px]'>{index + 1}</td>
-                              <td className='py-[8px] text-[15px]'>{item.name}</td>
+                              <td className='py-[8px] text-[15px]'>{item.first_name || item.name}</td>
                               <td className='py-[8px] text-[15px]'>{item.email}</td>
-                              <td className='py-[8px] text-[15px]'>{item.phone}</td>
+                              <td className='py-[8px] text-[15px]'>{item.phone || item.telp}</td>
                               <td className='py-[8px] text-[15px] flex gap-1 items-center text-white'>
                                  <button onClick={() => deleteUser(item.id)} className='px-[10px] py-[2px] bg-red-500 rounded-[3px]'>Delete</button>
                               </td>

@@ -3,7 +3,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Home from './pages/Main/Home'
 import Admin from './pages/Admin/Events/Events'
 import EventDetail from './pages/Main/EventDetail'
-import ClassList from './pages/Main/ClassList'
+import AllEvents from './pages/Main/AllEvents'
 import Report from './pages/Report/Report'
 import ReportDetail from './pages/Report/ReportDetail'
 import Login from './pages/Auth/Login'
@@ -27,6 +27,8 @@ import DashboardAdmin from './pages/Admin/Dashboard/DashboardAdmin'
 import Speaker from './pages/Admin/Speaker/Speaker'
 import SpeakerForm from './pages/Admin/Speaker/Form'
 import EditSpeaker from './pages/Admin/Speaker/EditSpeaker'
+import Category from './pages/Admin/Category/Category'
+import FormCategory from './pages/Admin/Category/Form'
 
 const App = () => {
    return (
@@ -35,7 +37,7 @@ const App = () => {
             <Route path='/' element={<Home />} />
             <Route path='/admin' element={<Admin />} />
             <Route path='/detail/:id' element={<EventDetail />} />
-            <Route path='/classlist' element={<ClassList />} />
+            <Route path='/allEvents' element={<AllEvents />} />
             <Route path='/report' element={<Report />} />
             <Route path='/reportDetail/:id' element={<ReportDetail />} />
             <Route path='/login' element={<Login />} />
@@ -60,6 +62,8 @@ const App = () => {
             <Route path='/dashboard/speaker' element={< Speaker />} />
             <Route path='/dashboard/speaker/form' element={< SpeakerForm />} />
             <Route path='/dashboard/speaker/edit/:id' element={< EditSpeaker />} />
+            <Route path='/dashboard/category' element={< Category />} />
+            <Route path='/dashboard/category/form' element={<  FormCategory />} />
          </Routes>
       </BrowserRouter>
    )
