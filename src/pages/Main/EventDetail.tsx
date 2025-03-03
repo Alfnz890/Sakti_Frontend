@@ -138,7 +138,7 @@ const EventDetail = () => {
                <p className="text-[14px] mt-[10px]">{parse(event.reasons || "")}</p>
             </div>
             <div className="col w-[600px]">
-               <h3 className="text-black font-semibold text-[20px]">what's going on at this event?</h3>
+               <h3 className="text-black font-semibold text-[20px]">What's going on at this event?</h3>
                <p className="text-[14px] mt-[10px]">{parse(event.descriptions || "")}</p>
             </div>
          </div>

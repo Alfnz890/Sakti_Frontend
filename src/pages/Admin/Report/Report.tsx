@@ -6,6 +6,7 @@ import Userlogo from '../../../assets/icons/user.png'
 import DashboardLogo from '../../../assets/icons/dashboard.png'
 import Bloglogo from '../../../assets/icons/blogging.png'
 import Exitlogo from '../../../assets/icons/exit.png'
+import Categorylogo from '../../../assets/icons/category.png'
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 import dayjs from 'dayjs'
@@ -116,11 +117,11 @@ const Report = () => {
                      <p className='text-sm'>Publish</p>
                   </a>
                   <a href='/dashboard/speaker' className='flex items-center gap-2 p-2 rounded-[6px]'>
-                     <img src={Bloglogo} className='w-[22px]' />
+                     <img src={Userlogo} className='w-[22px]' />
                      <p className='text-sm'>Speakers</p>
                   </a>
                   <a href='/dashboard/category' className='flex items-center gap-2 p-2 rounded-[6px]'>
-                     <img src={Bloglogo} className='w-[22px]' />
+                     <img src={Categorylogo} className='w-[22px]' />
                      <p className='text-sm'>Category</p>
                   </a>
                   <a onClick={logout} className='flex items-center gap-2 p-2 absolute bottom-5 cursor-pointer'>
@@ -146,10 +147,10 @@ const Report = () => {
                   </div>
                </div>
                <div className='my-[23px] flex items-center justify-between'>
-                  <h3 className='text-[25px] font-semibold tracking-wider'>Reports</h3>
+                  <h3 className='text-[25px] font-semibold tracking-wider'>Publish</h3>
                   <a href="/dashboard/history/form">
                      <div className='px-4 py-2 rounded-[5px] bg-yellow-primer shadow-md'>
-                        <p className='text-[14px]'>+ Add New Report</p>
+                        <p className='text-[14px]'>+ Add New Publish</p>
                      </div>
                   </a>
                </div>
@@ -170,9 +171,9 @@ const Report = () => {
                            reports.map((item, index) => (
                               <tr className='border-b' key={item.id}>
                                  <td className='py-[8px]'>{index + 1}</td>
-                                 <td className='py-[8px] text-[15px] line-clamp-2 overflow-hidden'>{parse(item.title || "")}</td>
+                                 <td className='py-[8px] text-[15px] line-clamp-1 overflow-hidden'>{parse(item.title || "")}</td>
                                  <td className='py-[8px] text-[15px] px-[13px]'>{item.createdAt}</td>
-                                 <td className='py-[8px] text-[15px]'>{item.author}</td>
+                                 <td className='py-[8px] text-[15px]'>{item.author || dataAdmin.first_name}</td>
                                  <td className='py-[8px] text-[15px] flex gap-1 items-center text-white'>
                                     <a href={`/dashboard/report/update/${item.id}`} className='px-[15px] py-[2px] bg-green-500 rounded-[3px]'>Edit</a>
                                     <button className='px-[10px] py-[2px] bg-red-500 rounded-[3px]' onClick={() => deleteReport(item.id)}>Delete</button>

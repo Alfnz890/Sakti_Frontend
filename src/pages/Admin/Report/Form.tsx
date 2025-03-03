@@ -18,12 +18,10 @@ const HistoryForm: React.FC = () => {
    const navigate = useNavigate();
 
    useEffect(() => {
-      const getUser = async () => {
-         const response = await axios.get(`${API_BASE_URL}/api/v1/currentUser`, { withCredentials: true })
-         setDataAdmin(response.data)
+      const storedData = localStorage.getItem('admin');
+      if (storedData) {
+         setDataAdmin(JSON.parse(storedData))
       }
-
-      getUser()
    }, [])
 
    const loadImage = (e) => {
@@ -39,14 +37,13 @@ const HistoryForm: React.FC = () => {
       formData.append('title', title);
       formData.append('body', body);
       formData.append('file', file);
-      formData.append('author', dataAdmin.username);
+      formData.append('author', dataAdmin.first_name);
 
       try {
          await axios.post(`${API_BASE_URL}/api/v1/reports`, formData, {
             headers: {
                'Content-Type': 'multipart/form-data'
-            },
-            withCredentials: true
+            }
          })
 
          await Swal.fire({
@@ -100,7 +97,7 @@ const HistoryForm: React.FC = () => {
                <div className="row flex items-center pt-[20px] pb-[40px]">
                   <div className="col max-w-[290px]">
                      <p className="text-black font-medium text-[15px]">Title</p>
-                     <p className="text-[12px] text-light-grey mt-1">Upload relevant images for the event. Make sure the image has a high resolution and is a supported file format (JPG, PNG).</p>
+                     <p className="text-[12px] text-light-grey mt-1">Please enter a clear and compelling title for your blog post that accurately represents its content and captures the reader's interest.</p>
                   </div>
                   <div className="col w-full">
                      <ReactQuill theme="snow" value={title} onChange={setTitle} className="ml-[90px] h-[100px]" />
@@ -109,7 +106,7 @@ const HistoryForm: React.FC = () => {
                <div className="row flex items-center pt-[20px] pb-[40px]">
                   <div className="col max-w-[290px]">
                      <p className="text-black font-medium text-[15px]">Body</p>
-                     <p className="text-[12px] text-light-grey mt-1">Upload relevant images for the event. Make sure the image has a high resolution and is a supported file format (JPG, PNG).</p>
+                     <p className="text-[12px] text-light-grey mt-1">Please provide the main content of your blog post, ensuring it is well-structured, informative, and engaging for your readers.</p>
                   </div>
                   <div className="col w-full">
                      <ReactQuill theme="snow" value={body} onChange={setBody} className="ml-[90px] h-[200px]" />

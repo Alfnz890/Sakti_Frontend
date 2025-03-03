@@ -18,6 +18,11 @@ const Navbar = () => {
 
    }, [])
 
+   const capitalize = (str) => {
+      if (!str) return "";
+      return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+   };
+
    return (
       <>
          <div className="bg-yellow-primer text-white">
@@ -27,12 +32,12 @@ const Navbar = () => {
                </div>
                <div className="flex items-center gap-[14px] text-[15px] text-black font-medium">
                   <a href="/" className="hover:underline">Home</a>
-                  <a href="/classlist" className="hover:underline">Events</a>
+                  <a href="/allEvents" className="hover:underline">Events</a>
                   <a href="/report" className="hover:underline">Publish</a>
                   <a href="/about" className="hover:underline">About</a>
                   <a href="/partners" className="hover:underline">Partner</a>
                   {user ? (
-                     <a href={`/user/dashboard/${user.id}`} className="hover:underline">{user.first_name || user.name}</a>
+                     <a href={`/user/dashboard/${user.id}`} className="hover:underline">{capitalize(user.first_name || user.name)}</a>
                   ) : (
                      <a href="/login" className="hover:underline">Login</a>
                   )}

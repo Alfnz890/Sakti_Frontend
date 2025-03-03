@@ -93,6 +93,10 @@ const Audience = () => {
                         <td className="w-[200px] p-[6px]">Speaker Position</td>
                         <td>: {data?.Speaker[0].speakerPosition}</td>
                      </tr>
+                     <tr className="border">
+                        <td className="w-[200px] p-[6px]">Total Participants</td>
+                        <td>: {data?.participantCount}</td>
+                     </tr>
                   </table>
                </div>
             </div>
@@ -114,7 +118,7 @@ const Audience = () => {
                         {data?.EventUser?.map((item, index) => (
                            <tr key={item.id} className="text-left border">
                               <th className="p-[6px]">{index + 1}</th>
-                              <td>{item.User.first_name}</td>
+                              <td>{item.User.first_name || item.User.name}</td>
                               <td>{item.User.email}</td>
                               <td>{item.User.phone}</td>
                            </tr>

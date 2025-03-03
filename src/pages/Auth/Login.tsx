@@ -5,6 +5,7 @@ import InformationBtn from '../../assets/icons/information-button.png'
 import { useState } from 'react'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
+import { toast, ToastContainer } from 'react-toastify'
 
 const API_BASE_URL = import.meta.env.VITE_URL_API
 
@@ -22,25 +23,33 @@ const Login = () => {
 
          const response = await axios.post(`${API_BASE_URL}/api/v1/login`, { username, password })
          localStorage.setItem('user', JSON.stringify(response.data.data));
+
+         await toast.promise(
+            new Promise((resolve) => setTimeout(resolve, 3000)), {
+            pending: "Login In...",
+            success: "Login success! redirecting...",
+            error: "Failed to Login!"
+         }
+         )
+
          navigate('/');
 
       } catch (error) {
          console.log(error)
-         // try {
-
-         //    const response = await axios.post(`/api/auth`, { username, password })
-         //    localStorage.setItem('admin', JSON.stringify(response.data.data))
-         //    navigate('/dashboard')
-
-         // } catch (error) {
-         //    console.error(error)
-         // }
+         toast.error('Username or Password is invalid!', {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: false,
+            theme: "light",
+         });
       }
 
    }
 
    return (
       <>
+         <ToastContainer />
          <div className="w-full h-[100vh] flex justify-center items-center">
             <div className='border p-[17px] flex flex-col items-center shadow-md'>
                <img src={Logo} className='w-[60px]' />
@@ -60,10 +69,6 @@ const Login = () => {
                   <button type="submit" className='bg-yellow-primer text-[14px] text-white py-[8px] rounded-[5px]'>Login</button>
                </form>
                <div className='mt-[15px] flex flex-col gap-2'>
-                  <div className='flex items-center gap-[10px]'>
-                     <img src={InformationBtn} className='w-[16px]' />
-                     <p className='text-[13px]'>Sign Up first with SALAM account</p>
-                  </div>
                   <div className='flex items-center gap-[10px]'>
                      <img src={InformationBtn} className='w-[16px]' />
                      <p className='text-[13px]'>Login with SALAM account</p>

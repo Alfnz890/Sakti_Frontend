@@ -18,6 +18,7 @@ interface HomeProps {
 const Home = () => {
 
    const [events, setEvents] = useState<HomeProps[]>([]);
+   const [countAllParticipants, setcountAllParticipants] = useState(0);
 
    useEffect(() => {
       const getAllEvents = async () => {
@@ -26,6 +27,14 @@ const Home = () => {
       }
       getAllEvents()
    }, []);
+
+   useEffect(() => {
+      const getTotalParticipants = async () => {
+         const response = await axios.get(`${API_BASE_URL}/api/v1/getAllParticipants`)
+         setcountAllParticipants(response.data)
+      }
+      getTotalParticipants()
+   }, [])
 
    const formatDate = (dateString: string) => {
       const options = { day: 'numeric', month: 'long', year: 'numeric' };
@@ -50,11 +59,11 @@ const Home = () => {
          </div>
          <div className='flex justify-center items-center bg-yellow-light gap-[40px] py-[50px]'>
             <div className='flex flex-col items-center text-center'>
-               <h3 className='text-3xl font-semibold text-black'>350+</h3>
+               <h3 className='text-3xl font-semibold text-black'>{countAllParticipants}+</h3>
                <p className='font-semibold text-black'>Event Participants</p>
             </div>
             <div className='flex flex-col items-center text-center'>
-               <h3 className='text-3xl font-semibold text-black'>50+</h3>
+               <h3 className='text-3xl font-semibold text-black'>10+</h3>
                <p className='font-semibold text-black'>Lecturers</p>
             </div>
             <div className='flex flex-col items-center text-center'>

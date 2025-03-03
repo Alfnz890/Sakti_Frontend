@@ -6,6 +6,7 @@ import Eventlogo from '../../../assets/icons/schedule.png'
 import Userlogo from '../../../assets/icons/user.png'
 import Bloglogo from '../../../assets/icons/blogging.png'
 import Exitlogo from '../../../assets/icons/exit.png'
+import Categorylogo from '../../../assets/icons/category.png'
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 import Pagination from '../../../components/Pagination'
@@ -118,11 +119,11 @@ const Events = () => {
                      <p className='text-sm'>Publish</p>
                   </a>
                   <a href='/dashboard/speaker' className='flex items-center gap-2 p-2 rounded-[6px]'>
-                     <img src={Bloglogo} className='w-[22px]' />
+                     <img src={Userlogo} className='w-[22px]' />
                      <p className='text-sm'>Speakers</p>
                   </a>
                   <a href='/dashboard/category' className='flex items-center gap-2 p-2 rounded-[6px]'>
-                     <img src={Bloglogo} className='w-[22px]' />
+                     <img src={Categorylogo} className='w-[20px]' />
                      <p className='text-sm'>Category</p>
                   </a>
                   <a onClick={logout} className='flex items-center gap-2 p-2 absolute bottom-5 cursor-pointer'>

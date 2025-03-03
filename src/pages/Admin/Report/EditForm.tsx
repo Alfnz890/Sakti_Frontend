@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import DOMPurify from "dompurify";
 import ReactQuill from "react-quill";
 import UploadLogo from '../../../assets/icons/cloud-computing.png'
 import axios from "axios";
+import Swal from "sweetalert2";
 
 const UpdateForm = () => {
 
@@ -16,12 +16,10 @@ const UpdateForm = () => {
    const { id } = useParams();
 
    useEffect(() => {
-      const getUser = async () => {
-         const response = await axios.get('http://localhost:3000/api/v1/currentUser', { withCredentials: true })
-         setDataAdmin(response.data)
+      const storedData = localStorage.getItem('admin');
+      if (storedData) {
+         setDataAdmin(JSON.parse(storedData))
       }
-
-      getUser()
    }, [])
 
    useEffect(() => {
@@ -44,22 +42,25 @@ const UpdateForm = () => {
    const onSubmit = async (e) => {
       e.preventDefault();
 
-      const titlePurify = DOMPurify.sanitize(title, { ALLOWED_TAGS: [] });
-      const bodyPurify = DOMPurify.sanitize(body, { ALLOWED_TAGS: [] });
-
       const formData = new FormData();
-      formData.append('title', titlePurify);
-      formData.append('body', bodyPurify);
+      formData.append('title', title);
+      formData.append('body', body);
       formData.append('file', file);
-      formData.append('author', dataAdmin.username);
+      formData.append('author', dataAdmin.first_name);
 
       try {
          await axios.patch(`http://localhost:3000/api/v1/reports/${id}`, formData, {
             headers: {
                'Content-Type': 'multipart/form-data'
-            },
-            withCredentials: true
+            }
          })
+
+         await Swal.fire({
+            icon: "success",
+            title: "Success!",
+            text: "Your publish has been added!"
+         })
+
          navigate('/dashboard/report')
       } catch (error) {
          console.log(error)
@@ -117,7 +118,7 @@ const UpdateForm = () => {
                   </div>
                </div>
                <div className="mt-4 flex gap-2 items-center justify-end">
-                  <a href="/dashboard" className="bg-yellow-primer px-5 py-[8px] rounded-[4px]">Cancel</a>
+                  <a href="/dashboard/report" className="bg-yellow-primer px-5 py-[8px] rounded-[4px]">Cancel</a>
                   <button type="submit" className="bg-green-600 text-white px-7 py-2 rounded-[4px]">Save</button>
                </div>
             </form>

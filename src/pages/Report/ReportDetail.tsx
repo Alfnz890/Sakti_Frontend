@@ -34,17 +34,6 @@ const HistoryDetail = () => {
                <div className="col">
                   <p className="text-[15px] mb-[10px]">{parse(reportDetail.body || "")}</p>
                </div>
-               <div className="col w-[2500px]">
-                  <div className="p-[10px]" id="history-more">
-                     <h3 className="text-[20px] font-medium">More</h3>
-                     <div className="mt-[20px] flex flex-col gap-[15px]">
-                        <CardSimpleHistory />
-                        <CardSimpleHistory />
-                        <CardSimpleHistory />
-                        <CardSimpleHistory />
-                     </div>
-                  </div>
-               </div>
             </div>
          </div>
          <Footer />

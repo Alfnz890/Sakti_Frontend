@@ -21,16 +21,6 @@ const Register = () => {
 
       try {
 
-         // const response = await axios.post(`/api/auth`, { username, password })
-         // const user = response.data.data;
-
-         // const name = user.username;
-         // const first_name = user.first_name;
-         // const phone = user.telp;
-
-         // await axios.post(`${API_BASE_URL}/api/v1/users`, { name, first_name, password, phone, email })
-         // console.log("User has beed added successfully!")
-
          try {
             const response = await axios.post(`${API_BASE_URL}/api/v1/users`, { name, password, email, phone })
             localStorage.setItem('user', JSON.stringify(response.data.data));

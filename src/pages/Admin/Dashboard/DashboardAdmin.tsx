@@ -1,4 +1,3 @@
-// import Searcglogo from '../../../assets/icons/search-interface-symbol.png'
 import DashboardLogo from '../../../assets/icons/dashboard.png'
 import Person from '../../../assets/person.jpg'
 import Logo from '../../../assets/icons/logo.png'
@@ -6,6 +5,7 @@ import Eventlogo from '../../../assets/icons/schedule.png'
 import Userlogo from '../../../assets/icons/user.png'
 import Bloglogo from '../../../assets/icons/blogging.png'
 import Exitlogo from '../../../assets/icons/exit.png'
+import Categorylogo from '../../../assets/icons/category.png'
 import axios from "axios"
 import { useEffect, useState } from "react"
 
@@ -21,7 +21,7 @@ interface DashboardAdminProps {
 
 const DashboardAdmin = () => {
 
-   const [dataAdmin, setDataAdmin] = useState({ id: null, username: "", email: "" })
+   const [dataAdmin, setDataAdmin] = useState({})
    const [activeEvents, setActiveEvents] = useState(0);
    const [completedEvents, setCompletedEvents] = useState(0);
    const [pendingEvents, setPendingEvents] = useState(0);
@@ -125,11 +125,11 @@ const DashboardAdmin = () => {
                   <p className='text-sm'>Publish</p>
                </a>
                <a href='/dashboard/speaker' className='flex items-center gap-2 p-2 rounded-[6px]'>
-                  <img src={Bloglogo} className='w-[22px]' />
+                  <img src={Userlogo} className='w-[22px]' />
                   <p className='text-sm'>Speakers</p>
                </a>
                <a href='/dashboard/category' className='flex items-center gap-2 p-2 rounded-[6px]'>
-                  <img src={Bloglogo} className='w-[22px]' />
+                  <img src={Categorylogo} className='w-[20px]' />
                   <p className='text-sm'>Category</p>
                </a>
                <a onClick={logout} className='flex items-center gap-2 p-2 absolute bottom-5 cursor-pointer'>
@@ -143,7 +143,7 @@ const DashboardAdmin = () => {
                <div className='flex items-center gap-3'>
                   <img src={Person} className='w-[40px] rounded-full' />
                   <div>
-                     <p className='text-[14px]'>{dataAdmin.first_name}</p>
+                     <p className='text-[14px]'>{dataAdmin.first_name || dataAdmin.name}</p>
                      <p className='text-[11px] text-light-grey'>019283712638123123</p>
                   </div>
                </div>
@@ -189,8 +189,8 @@ const DashboardAdmin = () => {
                   <div className='border p-3 flex items-center gap-3 mt-2 shadow-md rounded-[5px] bg-white'>
                      <img src={Logo} className='w-[30px]' />
                      <div className='text-[12px]'>
-                        <p className='line-clamp-1'>{recentlyUser.first_name}</p>
-                        <p className='text-light-grey'>{recentlyUser.email}</p>
+                        <p className='line-clamp-1'>{recentlyUser.first_name || recentlyUser.name}</p>
+                        <p className='text-light-grey italic'>{recentlyUser.email ? (recentlyUser.email) : ('No email yet!')}</p>
                      </div>
                   </div>
                </div>

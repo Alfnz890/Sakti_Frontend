@@ -4,6 +4,7 @@ import Lock from '../../assets/icons/padlock.png'
 import { useState } from 'react'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
+import { toast, ToastContainer } from 'react-toastify'
 
 const API_BASE_URL = import.meta.env.VITE_URL_API
 
@@ -19,16 +20,44 @@ const AdminLogin = () => {
       try {
 
          const response = await axios.post(`/api/auth`, { username, password })
+
+         // if (response.data.data.status_login === 'mahasiswa') {
+         //    return toast.error('Unauthorize!', {
+         //       position: "top-right",
+         //       autoClose: 5000,
+         //       hideProgressBar: false,
+         //       closeOnClick: false,
+         //       theme: "light",
+         //    });
+         // }
+
          localStorage.setItem('admin', JSON.stringify(response.data.data))
+
+         await toast.promise(
+            new Promise((resolve) => setTimeout(resolve, 3000)), {
+            pending: "Login In...",
+            success: "Login success! redirecting...",
+            error: "Failed to Login!"
+         }
+         )
+
          navigate('/dashboard')
 
       } catch (err: any) {
          setError(err.response?.data?.msg || "Login failed");
+         toast.error('Username or Password is invalid!', {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: false,
+            theme: "light",
+         });
       }
    }
 
    return (
       <>
+         <ToastContainer />
          <div className="w-full h-[100vh] flex justify-center items-center">
             <div className='border p-[17px] flex flex-col items-center shadow-md'>
                <img src={Logo} className='w-[60px]' />

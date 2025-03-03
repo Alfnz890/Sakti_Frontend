@@ -197,7 +197,7 @@ const Form: React.FC = () => {
                <div className="row flex items-center border-b pb-[65px] pt-[25px] border shadow-md p-3">
                   <div className="col max-w-[290px]">
                      <p className="text-black font-medium text-[15px]">Choose Speaker</p>
-                     <p className="text-[12px] text-light-grey mt-1">Provide clear and concise details about the task, including specific steps, deadlines, and any resources required.</p>
+                     <p className="text-[12px] text-light-grey mt-1">Please select a speaker for the event who best matches the topic and can provide valuable insights to the audience.</p>
                   </div>
                   <div className="col w-full">
                      <select className="w-[320px] border rounded-[3px] ml-[90px] p-2 bg-lighter-grey outline-none text-[13px]" value={selectedSpeaker} onChange={handleSpeakerChange}>
@@ -216,7 +216,7 @@ const Form: React.FC = () => {
                <div className="row flex items-center border-b pb-[65px] pt-[25px] border shadow-md p-3">
                   <div className="col max-w-[290px]">
                      <p className="text-black font-medium text-[15px]">Choose Category</p>
-                     <p className="text-[12px] text-light-grey mt-1">Lorem ipsum dolor sit amet consectetur adipisicing elit. Laudantium fugit explicabo ratione voluptatibus.</p>
+                     <p className="text-[12px] text-light-grey mt-1">Please select the most appropriate category for your event to help attendees easily find and understand the type of event you are organizing.</p>
                   </div>
                   <div className="col w-full">
                      <select className="w-[320px] border rounded-[3px] ml-[90px] p-2 bg-lighter-grey outline-none text-[13px]" value={selectedCategory} onChange={(e) => setSelectedCategory(e.target.value)}>

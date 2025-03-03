@@ -6,6 +6,7 @@ import Userlogo from '../../../assets/icons/user.png'
 import Bloglogo from '../../../assets/icons/blogging.png'
 import DashboardLogo from '../../../assets/icons/dashboard.png'
 import Exitlogo from '../../../assets/icons/exit.png'
+import Categorylogo from '../../../assets/icons/category.png'
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 import Pagination from '../../../components/Pagination'
@@ -42,7 +43,7 @@ const Users = () => {
 
    const fetchUser = async (page: number) => {
       try {
-         const response = await axios.get(`${API_BASE_URL}/api/v1/users?page=${page}&limit=5&search_query=${keyword}`)
+         const response = await axios.get(`${API_BASE_URL}/api/v1/users?page=${page}&limit=10&search_query=${keyword}`)
          setUser(response.data.result)
          setPage(response.data.page);
          setPages(response.data.totalPage)
@@ -53,7 +54,7 @@ const Users = () => {
 
    const logout = async () => {
       try {
-         await axios.delete(`${API_BASE_URL}/api/v1/logout`, { withCredentials: true })
+         localStorage.clear();
          window.location.href = ('/');
       } catch (error) {
          console.log(error);
@@ -72,7 +73,7 @@ const Users = () => {
       }).then(async (result) => {
          if (result.isConfirmed) {
             try {
-               await axios.delete(`${API_BASE_URL}/api/v1/users/${id}`, { withCredentials: true })
+               await axios.delete(`${API_BASE_URL}/api/v1/users/${id}`)
                await Swal.fire("Deleted!", "User has been deleted.", "success")
                window.location.reload();
             } catch (error) {
@@ -87,6 +88,11 @@ const Users = () => {
       setPage(0);
       setKeyword(query);
    }
+
+   const capitalize = (str) => {
+      if (!str) return "";
+      return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+   };
 
    return (
       <>
@@ -114,11 +120,11 @@ const Users = () => {
                      <p className='text-sm'>Publish</p>
                   </a>
                   <a href='/dashboard/speaker' className='flex items-center gap-2 p-2 rounded-[6px]'>
-                     <img src={Bloglogo} className='w-[22px]' />
+                     <img src={Userlogo} className='w-[22px]' />
                      <p className='text-sm'>Speakers</p>
                   </a>
                   <a href='/dashboard/category' className='flex items-center gap-2 p-2 rounded-[6px]'>
-                     <img src={Bloglogo} className='w-[22px]' />
+                     <img src={Categorylogo} className='w-[22px]' />
                      <p className='text-sm'>Category</p>
                   </a>
                   <a onClick={logout} className='flex items-center gap-2 p-2 absolute bottom-5 cursor-pointer'>
@@ -152,7 +158,7 @@ const Users = () => {
                      <thead>
                         <tr className='text-left  border-b text-[14px]'>
                            <th className='pb-[7px]'>No</th>
-                           <th className='pb-[7px]'>Username</th>
+                           <th className='pb-[7px] w-[370px]'>Username</th>
                            <th className='pb-[7px]'>Email</th>
                            <th className='pb-[7px]'>Phone</th>
                            <th className='pb-[7px]'>Action</th>
