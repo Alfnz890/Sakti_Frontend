@@ -37,8 +37,8 @@ const Audience = () => {
       csvData.push(["Event Status", data.status])
       csvData.push(["Event Time", data.time])
       csvData.push(["Event Date", data.date])
-      csvData.push(["Event Speaker", data.Speaker[0].speakerName])
-      csvData.push(["Event Position", data.Speaker[0].speakerPosition])
+      csvData.push(["Event Speaker", data.Speaker.speakerName])
+      csvData.push(["Event Position", data.Speaker.speakerPosition])
       csvData.push([]);
 
       csvData.push(["No", "Username", "Email", "Phone"]);
@@ -87,11 +87,11 @@ const Audience = () => {
                      </tr>
                      <tr className="border">
                         <td className="w-[200px] p-[6px]">Speaker</td>
-                        <td>: {data?.Speaker[0].speakerName}</td>
+                        <td>: {data?.Speaker?.speakerName}</td>
                      </tr>
                      <tr className="border">
                         <td className="w-[200px] p-[6px]">Speaker Position</td>
-                        <td>: {data?.Speaker[0].speakerPosition}</td>
+                        <td>: {data?.Speaker?.speakerPosition}</td>
                      </tr>
                      <tr className="border">
                         <td className="w-[200px] p-[6px]">Total Participants</td>

@@ -4,6 +4,9 @@ import Navbar from "../../components/navbar"
 import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
 import Pagination from "../../components/Pagination"
+import CertificateImage from '../../assets/Cream Bordered Appreciation Certificate.png'
+import html2canvas from 'html2canvas'
+import jsPDF from "jspdf"
 
 interface UserDashboardProps {
    id: number;
@@ -45,6 +48,20 @@ const UserDashboard = () => {
       setPages(response.data.totalPage)
    }
 
+   const handleDownload = async () => {
+      const pdf = new jsPDF({
+         orientation: "landscape",
+         unit: "mm",
+         format: "a4"
+      })
+      const img = new Image();
+      img.src = CertificateImage;
+      img.onload = () => {
+         pdf.addImage(img, "PNG", 0, 0, 297, 210);
+         pdf.save("Certificate.pdf")
+      }
+   }
+
    return (
       <>
          <Navbar />
@@ -73,6 +90,7 @@ const UserDashboard = () => {
                         <th className="text-sm text-left py-2 px-3">Time</th>
                         <th className="text-sm text-left py-2 px-3">Link</th>
                         <th className="text-sm text-left py-2 px-3">Status</th>
+                        <th className="text-sm text-left py-2 px-3">Certificate</th>
                      </tr>
                   </thead>
                   <tbody>
@@ -84,6 +102,9 @@ const UserDashboard = () => {
                               <td className="text-sm text-left py-2 px-3">09.30</td>
                               <td className="text-sm text-left py-2 px-3"><a href={item.event.link} className="underline" target="_blank">{item.event.link}</a></td>
                               <td className="text-sm text-left py-2 px-3">{item.event.status}</td>
+                              <td className="text-sm text-left py-2 px-3">
+                                 <button className="bg-green-500 text-sm text-white px-2 py-[2px] rounded-[3px]" onClick={handleDownload}>Certificate</button>
+                              </td>
                            </tr>
                         ))
                      ) : (

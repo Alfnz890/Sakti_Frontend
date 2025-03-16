@@ -13,7 +13,7 @@ const EventDetail = () => {
 
    const { id } = useParams();
 
-   const [event, setEvent] = useState({ Speaker: [] });
+   const [event, setEvent] = useState({ Speaker: null });
    const [user, setUser] = useState(null);
    const [isRegister, setIsRegister] = useState(false)
 
@@ -142,13 +142,13 @@ const EventDetail = () => {
                <p className="text-[14px] mt-[10px]">{parse(event.descriptions || "")}</p>
             </div>
          </div>
-         {/* Mentor */}
+         {/* Speaker */}
          <div className="bg-yellow-light flex justify-center py-[30px] gap-[50px] items-center">
-            <img src={event.Speaker[0]?.urlimage} className="w-[140px] h-[140px] object-cover rounded-full" />
+            <img src={event.Speaker?.urlimage} className="w-[140px] h-[140px] object-cover rounded-full" />
             <div className="max-w-[600px] flex flex-col gap-[3px]">
-               <h3 className="text-[19px] font-medium text-black">{event.Speaker[0]?.speakerName}</h3>
-               <p className="text-[14px] text-light-grey" >{event.Speaker[0]?.speakerPosition}</p>
-               <p className="text-[14px] w-[480px]">{parse(event.Speaker[0]?.speakerBiography || "")}</p>
+               <h3 className="text-[19px] font-medium text-black">{event.Speaker?.speakerName}</h3>
+               <p className="text-[14px] text-light-grey" >{event.Speaker?.speakerPosition}</p>
+               <p className="text-[14px] w-[480px]">{parse(event.Speaker?.speakerBiography || "")}</p>
             </div>
          </div>
          {/* Syllabus */}

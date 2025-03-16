@@ -171,7 +171,7 @@ const Report = () => {
                            reports.map((item, index) => (
                               <tr className='border-b' key={item.id}>
                                  <td className='py-[8px]'>{index + 1}</td>
-                                 <td className='py-[8px] text-[15px] line-clamp-1 overflow-hidden'>{parse(item.title || "")}</td>
+                                 <td className='py-[8px] text-[15px] line-clamp-2 overflow-hidden'>{parse(item.title || "")}</td>
                                  <td className='py-[8px] text-[15px] px-[13px]'>{item.createdAt}</td>
                                  <td className='py-[8px] text-[15px]'>{item.author || dataAdmin.first_name}</td>
                                  <td className='py-[8px] text-[15px] flex gap-1 items-center text-white'>

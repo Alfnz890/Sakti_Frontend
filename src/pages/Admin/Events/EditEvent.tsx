@@ -58,8 +58,7 @@ const EditEvent = () => {
 
       try {
          await axios.patch(`${API_BASE_URL}/api/v1/events/${id}`, formData, {
-            headers: { 'Content-Type': 'multipart/form-data' },
-            withCredentials: true
+            headers: { 'Content-Type': 'multipart/form-data' }
          })
 
          navigate('/dashboard')
@@ -73,10 +72,10 @@ const EditEvent = () => {
    useEffect(() => {
 
       const getThisEvent = async () => {
-         const response = await axios.get(`${API_BASE_URL}/api/v1/events/${id}`, { withCredentials: true })
+         const response = await axios.get(`${API_BASE_URL}/api/v1/events/${id}`)
 
-         if (response.data?.Speaker?.length > 0) {
-            setSelectedSpeaker(response.data.Speaker[0].id)
+         if (response.data?.Speaker) {
+            setSelectedSpeaker(response.data.Speaker.id)
          }
 
          setEventName(response.data.eventName)
